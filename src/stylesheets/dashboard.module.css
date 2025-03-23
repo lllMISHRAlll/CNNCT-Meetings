@@ -1,0 +1,362 @@
+.container {
+  display: flex;
+  height: 105vh;
+  width: 100%;
+  font-family: "Poppins";
+}
+
+.left {
+  width: 22dvw;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  cursor: pointer;
+  color: #676767;
+  padding: 1rem 2rem;
+  border-radius: 0 -10px -10px 0;
+  transition: 0.3s;
+}
+
+.navItem:hover {
+  color: #007bff;
+  font-size: 1.1rem;
+  transition: 0.3s;
+}
+
+.navItem span {
+  margin-left: 2rem;
+}
+
+.navItem img {
+  margin-right: 10px;
+}
+
+.active {
+  font-weight: 550;
+  background-color: #f3f3f1;
+  color: #1877f2;
+  transition: 0.3s;
+}
+
+.content {
+  width: 100%;
+  padding: 1.5rem 2rem;
+  background-color: #f3f3f1;
+}
+
+.upperContent {
+  display: flex;
+  justify-content: space-between;
+}
+
+.newEvent {
+  margin-top: 2.5rem;
+  padding: 0.5rem;
+  border: 1px solid #1877f2;
+  border-radius: 50px;
+  color: #1877f2;
+}
+
+.newEvent:hover {
+  background: #007bff;
+  color: #f3f3f1;
+  transition: 0.3s;
+}
+
+.eventContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.eventList {
+  display: flex;
+  gap: 2rem;
+}
+
+.eventTileActive {
+  background-color: white;
+  width: 25dvw;
+  padding: 1rem;
+  border-radius: 15px;
+  height: 27dvh;
+  transition: 0.3s;
+  border-top: 15px solid #1877f2;
+}
+.eventTileInActive {
+  background-color: white;
+  width: 25dvw;
+  padding: 1rem;
+  border-radius: 15px;
+  height: 27dvh;
+  transition: 0.3s;
+  border-top: 15px solid #676767;
+}
+
+.eventHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eventHeader button {
+  border: none;
+  background-color: transparent;
+  color: #676767;
+}
+
+.eventHeader span {
+  font-size: 1.3rem;
+  font-weight: 300;
+}
+
+.eventdatesANdInfo p {
+  margin-top: 1rem;
+  color: #676767;
+  font-size: 0.7rem;
+}
+
+.eventdatesANdInfo {
+  font-size: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.eventdatesANdInfo span {
+  color: #1877f2;
+}
+
+.eventFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+
+.eventFooter button {
+  border: none;
+  background-color: transparent;
+  color: #676b5f;
+  font-size: 0.9rem;
+}
+
+.logo {
+  display: flex;
+  gap: 0.5rem;
+  margin: 2rem 2rem 2rem 2rem;
+  cursor: pointer;
+}
+
+.logo p {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+.logo p:hover {
+  color: #007bff;
+  font-size: 1.6rem;
+  transition: 0.2s;
+}
+
+.createEvent {
+  width: 8rem;
+  margin: auto;
+  font-size: 1rem;
+  padding: 0.5rem;
+  background-color: transparent;
+  border: 1px solid #1877f2;
+  border-radius: 40px;
+  color: #1877f2;
+}
+
+.createEvent:hover {
+  background-color: #007bff;
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+.bookingSections {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  background-color: #ffffff;
+  height: 75dvh;
+  border-radius: 20px;
+  font-family: "Inter";
+  border: 1px solid #676767;
+  position: relative;
+}
+
+.bookingHead {
+  display: flex;
+  gap: 8rem;
+  padding: 0rem 4.5rem;
+  border-bottom: 1px solid #676767;
+}
+
+.bookingHead p {
+  margin: 1rem 1rem;
+}
+
+.bookingHead:first-child div {
+  cursor: pointer;
+}
+
+.activeTab {
+  border-bottom: 2px solid #007bff;
+  cursor: pointer;
+}
+
+.bookingContentContainer {
+  margin-top: 20px;
+}
+
+.bookingContent {
+  padding: 0.5rem 5rem;
+}
+
+.meeting {
+  display: flex;
+  justify-content: space-between;
+}
+
+.meetingInner {
+  display: flex;
+  gap: 15rem;
+}
+
+.meetingInner h3 {
+  font-weight: 400;
+}
+.meetingInner span {
+  color: #007bff;
+  margin-top: 0.3rem;
+}
+
+.meetingInner div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.teamCount {
+  color: #676767;
+}
+
+.participantsAndStatus {
+  display: flex;
+  gap: 5rem;
+}
+
+.participantsAndStatus label {
+  background-color: #f3f3f1;
+  height: 2rem;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #676767;
+}
+
+.participantsAndStatus p {
+  margin-top: 0.5rem;
+  color: #676767;
+  cursor: pointer;
+}
+
+.activeCreate {
+  background-color: #007bff;
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+.membersModal {
+  height: 50dvh;
+  width: 18dvw;
+  position: absolute;
+  opacity: 50%;
+  right: 15px;
+  top: 8rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  padding: 1rem;
+}
+
+.membersModal h2 {
+  font-family: "Poppins";
+  color: #000000;
+  font-size: 1.7rem;
+}
+.membersModal p {
+  color: black;
+}
+
+.memberList ul {
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.memberList li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.2rem;
+}
+
+.noMeetings {
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+/***************** Toggle Switch *********************/
+.switch {
+  position: relative;
+  width: 40px;
+  height: 20px;
+}
+
+.switchInput {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switchSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #676767;
+  transition: 0.3s;
+  border-radius: 20px;
+}
+
+.switchInput:checked + .switchSlider {
+  background-color: #1877f2;
+}
+
+.switchSlider::before {
+  content: "";
+  position: absolute;
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+}
+
+.switchInput:checked + .switchSlider::before {
+  transform: translateX(20px);
+}

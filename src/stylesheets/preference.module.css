@@ -1,0 +1,134 @@
+.main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.left {
+  width: 70%;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.body {
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.hostContainer h2 {
+  font-family: "Inter";
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+h5 {
+  font-family: "poppins";
+  margin-top: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.inputField {
+  border: none;
+  width: 80dvh;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  background-color: #f0f0f0;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-family: "Poppins";
+}
+
+.option {
+  width: 15dvw;
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+  background-color: #fff;
+  text-align: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.option img {
+  height: 1.2rem;
+  width: 1.2rem;
+}
+
+.option:hover {
+  background-color: #f0f0f0;
+}
+
+.option.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.continueBtn {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 50px;
+  background-color: #007bff;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.continueBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.continueBtn:hover:not(:disabled) {
+  background-color: rgb(75, 75, 197);
+}
+
+.right {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.right img {
+  width: 80%;
+  max-width: 500px;
+}
+
+.hostContainer h2 {
+  font-family: "Poppins";
+  font-size: 2.5rem;
+  font-weight: 600;
+}

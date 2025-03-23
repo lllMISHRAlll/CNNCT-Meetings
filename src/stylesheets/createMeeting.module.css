@@ -1,0 +1,303 @@
+.createMeetingContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 25px;
+  margin: 0.5rem 6rem 0 0;
+  height: 85dvh;
+}
+
+.header {
+  text-align: center;
+  color: #1877f2;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #999999;
+  margin-bottom: 1.5rem;
+}
+
+.createMeetingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mandatory::after {
+  content: " *";
+  color: red;
+}
+
+.formContainer form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.createMeetingActions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.createMeetingActions button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.inputGroup {
+  display: flex;
+  width: 50dvw;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputGroup input {
+  width: 35rem;
+  height: 2.8rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+}
+
+.inputGroupDateTime {
+  display: flex;
+  width: 40dvw;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputGroupDescription {
+  display: flex;
+  width: 50dvw;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #999999;
+  padding-bottom: 1rem;
+}
+
+.inputGroupDescription textarea {
+  width: 35rem;
+  height: 6rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  resize: none;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.inputGroupDateTime {
+  display: flex;
+  width: 50dvw;
+  align-items: center;
+}
+
+.dateInput {
+  width: 7rem;
+  height: 2.8rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.hrInput {
+  width: 5rem;
+  height: 2.8rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.inputGroupSetDuration {
+  display: flex;
+  width: 50dvw;
+  justify-content: space-between;
+  align-items: center;
+}
+.inputGroupSetDuration input {
+  width: 5rem;
+  height: 2.8rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  font-size: 1rem;
+  padding: 0.5rem;
+  margin-right: 62.5%;
+  color: #999999;
+  text-align: center;
+}
+
+.ampmSelect {
+  width: 4rem;
+  height: 2.8rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+  color: #999999;
+}
+
+.timezoneInput {
+  width: 15rem;
+  height: 2.8rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  padding: 0.5rem;
+  text-align: center;
+  color: #999999;
+  text-align: left;
+}
+
+.dateTimeContainer {
+  display: flex;
+  gap: 1.35rem;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: end;
+  gap: 3rem;
+  width: 100%;
+  align-items: center;
+  padding-right: 15%;
+  margin-top: 1.5rem;
+}
+
+.buttonContainer button {
+  width: 7rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 550;
+}
+
+.submitBtn {
+  background-color: #1877f2;
+  color: white;
+}
+
+.bannerContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0rem 0rem 1rem 1rem;
+  background-color: white;
+}
+
+.bannerHeader {
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.banner {
+  width: 22rem;
+  height: 10rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.banner input {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  text-align: center;
+  color: white;
+}
+.banner input::placeholder {
+  color: white;
+}
+
+.banner img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.banner h3 {
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.editIcon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.colorOptions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.colorButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.colorButton:hover {
+  transform: scale(1.1);
+}
+
+.colorInputContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  align-items: center;
+  border-bottom: 1px solid #999999;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.colorInput {
+  width: 40px;
+  height: 40px;
+  border: none;
+  cursor: pointer;
+}
+
+.colorTextInput {
+  padding: 0.5rem;
+  background-color: #eeeeee;
+  border-radius: 5px;
+  border: none;
+  font-size: 0.9rem;
+}
+
+.formInput {
+  display: flex;
+  width: 60dvw;
+  justify-content: space-between;
+  padding: 0 4rem;
+  margin-top: 0.3rem;
+  align-items: center;
+}
+
+.formInput input {
+  width: 40dvw;
+  height: 2rem;
+  border-radius: 10px;
+  border: 1px solid #999999;
+  padding: 0.5rem;
+}

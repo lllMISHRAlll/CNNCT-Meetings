@@ -1,0 +1,159 @@
+.main {
+  height: 100dvh;
+  display: flex;
+  overflow-y: hidden;
+}
+
+.left {
+  width: 70%;
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.right img {
+  width: 30rem;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo {
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.logo p {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+/***       SIGN UP SECTION         ***/
+
+.signupContainer {
+  width: 400px;
+  margin: auto;
+  font-family: "Poppins";
+}
+
+.signupContainer > div {
+  display: flex;
+  gap: 5.2rem;
+  align-items: center;
+}
+h2 {
+  font-size: 22px;
+  font-weight: 400;
+  color: #222;
+}
+
+.formUpper a {
+  font-size: 14px;
+  color: #1877f2;
+}
+
+.formUpper h3 {
+  font-size: 3rem;
+}
+
+.signupForm {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.signUpForm input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+}
+
+.signUpForm label {
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+
+input:focus {
+  border-color: #1877f2;
+}
+
+.inputError {
+  border-color: red !important;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+.terms {
+  display: flex;
+  font-size: 0.8rem;
+}
+
+.checkBox {
+  margin: 0rem 1rem 1.3rem 0.5rem;
+}
+
+.authBtn {
+  width: 100%;
+  padding: 14px;
+  background-color: #c4c4c4;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  cursor: not-allowed;
+  margin-top: 1rem;
+}
+
+.authBtn:enabled {
+  background-color: #1877f2;
+  cursor: pointer;
+}
+
+.passwordContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordContainer input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+}
+
+.termsAndServices {
+  font-family: "Poppins";
+  color: #727171;
+  text-align: center;
+  margin-top: 4rem;
+  font-size: 0.7rem;
+}
+
+.termsAndServices span {
+  text-decoration: underline;
+}
+
+.loginToSignUp {
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.loginToSignUp a {
+  color: #1877f2;
+  cursor: pointer;
+}

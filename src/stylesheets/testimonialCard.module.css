@@ -1,0 +1,42 @@
+.container {
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  font-family: "Poppins";
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.text {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #007bff;
+  border-radius: 50%;
+}
+
+.details {
+  margin-left: 0.75rem;
+}
+
+.name {
+  font-weight: 400;
+}
+
+.position {
+  font-size: 0.8rem;
+}

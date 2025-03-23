@@ -1,0 +1,67 @@
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 25px;
+  margin: 1rem auto;
+  width: 70dvw;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  border-bottom: 1px solid grey;
+  margin-bottom: 1rem;
+}
+
+.profileHeader {
+  text-align: left;
+  color: #1877f2;
+  font-size: 1rem;
+}
+
+.profileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profileInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.profileInputGroup label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.profileInput {
+  width: 70dvh;
+  height: 2.5rem;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+.profileButtonContainer {
+  display: flex;
+  justify-content: end;
+  margin: 1.5rem 2rem 0 0;
+}
+
+.profileSaveButton {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 10px;
+  background-color: #1877f2;
+  color: white;
+  cursor: pointer;
+}
+
+.profileSaveButton:hover {
+  background-color: #155db2;
+}
