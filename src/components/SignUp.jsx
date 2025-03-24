@@ -3,6 +3,9 @@ import style from "../stylesheets/authentication.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { getBaseURI } from "../utils/config.js";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -64,11 +67,24 @@ export default function SignUp() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isFormValid) return;
-    console.log("Form Submitted", formData);
-    navigate("/preference");
+    if (!isFormValid) return toast.error("Fill Valid Details");
+
+    const payload = {
+      name: `${formData.firstName} ${formData.lastName}`.trim(),
+      email: formData.email,
+      password: formData.password,
+    };
+
+    try {
+      const res = await axios.post(`${getBaseURI()}/api/auth/signup`, payload);
+      toast.success(res.data);
+      navigate("/preference");
+    } catch (error) {
+      console.error("Signup Error:", error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (

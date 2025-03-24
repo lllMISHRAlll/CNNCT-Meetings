@@ -3,11 +3,14 @@ import style from "../stylesheets/authentication.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { getBaseURI } from "../utils/config.js";
 
 export default function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
+    emailOrUsername: "",
     password: "",
   });
 
@@ -26,11 +29,13 @@ export default function Login() {
 
     if (!value) error = `${name} is required`;
 
-    if (name === "username") {
+    if (name === "emailOrUsername") {
       const usernamePattern = /^[a-zA-Z0-9_]{4,20}$/;
-      if (!usernamePattern.test(value))
-        error =
-          "Username must be 4-20 characters (letters, numbers, underscores)";
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!usernamePattern.test(value) && !emailPattern.test(value)) {
+        error = "Enter a valid username (4-20 chars) or email format";
+      }
     }
 
     if (name === "password") {
@@ -55,11 +60,25 @@ export default function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isFormValid) return;
-    console.log("Login Successful", formData);
-    navigate("/preference");
+
+    const payload = {
+      email: formData.emailOrUsername,
+      password: formData.password,
+    };
+
+    try {
+      const res = await axios.post(`${getBaseURI()}/api/auth/login`, payload);
+      toast.success(res.data.message);
+      navigate("/preference");
+    } catch (error) {
+      console.error("Login Failed", error.response?.data || error.message);
+      toast.error(
+        error.response?.data?.message || "Login failed. Please try again."
+      );
+    }
   };
 
   return (
@@ -76,18 +95,18 @@ export default function Login() {
 
           <form className={style.signupForm} onSubmit={handleSubmit}>
             <div className={style.signUpForm}>
-              <label htmlFor="username">Username</label>
+              <label htmlFor="emailOrUsername">Username / Email</label>
               <input
-                id="username"
+                id="emailOrUsername"
                 type="text"
-                name="username"
-                placeholder="Enter Username"
-                value={formData.username}
+                name="emailOrUsername"
+                placeholder="Enter Username or Email"
+                value={formData.emailOrUsername}
                 onChange={handleChange}
-                className={errors.username ? style.inputError : ""}
+                className={errors.emailOrUsername ? style.inputError : ""}
               />
-              {errors.username && (
-                <p className={style.error}>{errors.username}</p>
+              {errors.emailOrUsername && (
+                <p className={style.error}>{errors.emailOrUsername}</p>
               )}
             </div>
 
