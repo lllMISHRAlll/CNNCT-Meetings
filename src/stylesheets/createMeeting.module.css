@@ -8,6 +8,17 @@
   height: 85dvh;
 }
 
+.mandatory {
+  color: red;
+  margin-left: 4px;
+}
+
+.errorText {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
 .header {
   text-align: center;
   color: #1877f2;

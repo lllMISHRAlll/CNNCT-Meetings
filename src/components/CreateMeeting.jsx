@@ -15,26 +15,39 @@ function CreateMeeting({
   editable,
 }) {
   const [showBanner, setShowBanner] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleInputSubmit = (e) => {
-    e.preventDefault();
-    setShowBanner(true);
-  };
-
   const handleBannerSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
-      const userData = JSON.parse(
-        atob(localStorage.getItem("token").split(".")[1])
-      );
-      const userId = userData.userId;
-      const userEmail = userData.email;
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("Your session has expired. Please log in again.");
+      }
+
+      let userData;
+      try {
+        userData = JSON.parse(atob(token.split(".")[1]));
+      } catch (e) {
+        throw new Error("Invalid session token. Please log in again.");
+      }
+
+      if (!userData?.userId || !userData?.email) {
+        throw new Error("User information missing. Please log in again.");
+      }
+
+      const { userId, email: userEmail } = userData;
+
+      if (!formData.topic || !formData.date || !formData.time) {
+        throw new Error("Please fill in all required fields");
+      }
 
       const payload = {
         topic: formData.topic,
@@ -65,7 +78,7 @@ function CreateMeeting({
           payload,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -76,7 +89,7 @@ function CreateMeeting({
           payload,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -100,7 +113,30 @@ function CreateMeeting({
         emails: "",
       });
     } catch (error) {
-      console.error("Error processing meeting:", error.response?.data || error);
+      console.error("Meeting error:", error);
+
+      let errorMessage = "An error occurred while processing your request";
+
+      if (error.response) {
+        errorMessage =
+          error.response.data?.message ||
+          `Server error: ${error.response.status}`;
+      } else if (error.request) {
+        errorMessage = "Network error. Please check your connection.";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      toast.error(errorMessage);
+
+      if (
+        error.message.includes("session") ||
+        error.message.includes("token")
+      ) {
+        localStorage.removeItem("token");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -119,13 +155,13 @@ function CreateMeeting({
             handleChange={handleChange}
             handleSubmit={handleBannerSubmit}
             setToggleBanner={setShowBanner}
+            isSubmitting={isSubmitting}
           />
         ) : (
           <MeetingInput
             host={host}
             formData={formData}
             handleChange={handleChange}
-            handleSubmit={handleInputSubmit}
             setActiveTab={setActiveTab}
             setToggleBanner={setShowBanner}
           />

@@ -8,10 +8,15 @@ function MeetingBanner({
   handleChange,
   handleSubmit,
   setToggleBanner,
+  isSubmitting,
 }) {
   const [bgColor, setBgColor] = useState("#2D221B");
-
   const predefinedColors = ["#FF7F00", "#FFFFFF", "#000000"];
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleSubmit(e);
+  };
 
   return (
     <div className={styles.bannerContainer}>
@@ -55,42 +60,45 @@ function MeetingBanner({
           onChange={(e) => setBgColor(e.target.value)}
         />
       </div>
-      <div className={styles.formInput}>
-        <label>
-          Add Link<span className={styles.mandatory}></span>
-        </label>
-        <input
-          type="text"
-          name="link"
-          placeholder="Enter URL Here"
-          value={formData.link}
-          onChange={handleChange}
-        />
-      </div>
-      <div className={styles.formInput}>
-        <label>
-          Add Emails<span className={styles.mandatory}></span>
-        </label>
-        <input
-          type="text"
-          name="emails"
-          placeholder="Add member Emails"
-          value={formData.emails}
-          onChange={handleChange}
-        />
-      </div>
-      <div className={styles.buttonContainer}>
-        <button type="button" onClick={() => setToggleBanner(false)}>
-          Cancel
-        </button>
-        <button
-          type="button"
-          className={styles.submitBtn}
-          onClick={handleSubmit}
-        >
-          Save
-        </button>
-      </div>
+
+      <form onSubmit={handleFormSubmit}>
+        <div className={styles.formInput}>
+          <label>
+            Add Link<span className={styles.mandatory}></span>
+          </label>
+          <input
+            type="text"
+            name="link"
+            placeholder="Enter URL Here"
+            value={formData.link}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.formInput}>
+          <label>
+            Add Emails<span className={styles.mandatory}></span>
+          </label>
+          <input
+            type="text"
+            name="emails"
+            placeholder="Add member Emails"
+            value={formData.emails}
+            onChange={handleChange}
+          />
+        </div>
+        <div className={styles.buttonContainer}>
+          <button type="button" onClick={() => setToggleBanner(false)}>
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className={styles.submitBtn}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Saving..." : "Save"}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

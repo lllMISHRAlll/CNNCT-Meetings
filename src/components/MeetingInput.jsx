@@ -4,12 +4,12 @@ import styles from "../stylesheets/createMeeting.module.css";
 function MeetingInput({
   formData,
   handleChange,
-  handleSubmit,
   setActiveTab,
   setToggleBanner,
-  host,
 }) {
   const [timezones, setTimezones] = useState([]);
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     const fetchTimezones = () => {
       if (typeof Intl.supportedValuesOf === "function") {
@@ -31,45 +31,56 @@ function MeetingInput({
     setTimezones(fetchTimezones());
   }, []);
 
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.topic.trim()) newErrors.topic = true;
+    if (!formData.host.trim()) newErrors.host = true;
+    if (!formData.date.trim()) newErrors.date = true;
+    if (!formData.time.trim()) newErrors.time = true;
+    if (!formData.timezone.trim()) newErrors.timezone = true;
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleTimeChange = (e) => {
     let value = e.target.value.replace(/\D/g, "");
-
     if (value.length >= 2) value = value.slice(0, 2) + ":" + value.slice(2, 4);
     if (value.length > 5) value = value.slice(0, 5);
-
     handleChange({ target: { name: "time", value } });
   };
 
   const handleDateChange = (e) => {
     let value = e.target.value.replace(/\D/g, "");
-
     let day = value.slice(0, 2);
     let month = value.slice(2, 4);
     let year = value.slice(4, 6);
-
     if (day > 31) day = "31";
     if (month > 12) month = "12";
-
     let formattedValue = day;
     if (month.length) formattedValue += "/" + month;
     if (year.length) formattedValue += "/" + year;
-
     handleChange({ target: { name: "date", value: formattedValue } });
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      setToggleBanner(true);
+    }
   };
 
   return (
     <div className={styles.formContainer}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFormSubmit}>
         <div className={styles.inputGroup}>
-          <label>
-            Event Topic<span className={styles.mandatory}></span>
-          </label>
+          <label>Event Topic</label>
           <input
             type="text"
             name="topic"
             value={formData.topic}
             onChange={handleChange}
-            required
+            style={{ borderColor: errors.topic ? "#ED0000" : "" }}
           />
         </div>
 
@@ -84,16 +95,13 @@ function MeetingInput({
         </div>
 
         <div className={styles.inputGroup}>
-          <label>
-            Host Name
-            <span className={styles.mandatory}></span>
-          </label>
+          <label>Host Name</label>
           <input
             type="text"
             name="host"
             value={sessionStorage.getItem("host")}
             onChange={handleChange}
-            required
+            style={{ borderColor: errors.host ? "red" : "" }}
           />
         </div>
 
@@ -109,9 +117,7 @@ function MeetingInput({
         </div>
 
         <div className={styles.inputGroupDateTime}>
-          <label>
-            Date and Time<span className={styles.mandatory}></span>
-          </label>
+          <label>Date and Time</label>
           <div className={styles.dateTimeContainer}>
             <input
               className={styles.dateInput}
@@ -121,7 +127,7 @@ function MeetingInput({
               value={formData.date}
               onChange={handleDateChange}
               maxLength="10"
-              required
+              style={{ borderColor: errors.date ? "red" : "" }}
             />
             <input
               className={styles.hrInput}
@@ -131,7 +137,7 @@ function MeetingInput({
               value={formData.time}
               onChange={handleTimeChange}
               maxLength="5"
-              required
+              style={{ borderColor: errors.time ? "red" : "" }}
             />
             <select
               className={styles.ampmSelect}
@@ -147,8 +153,9 @@ function MeetingInput({
               name="timezone"
               value={formData.timezone}
               onChange={handleChange}
-              required
+              style={{ borderColor: errors.timezone ? "red" : "" }}
             >
+              <option value="">Select Timezone</option>
               {timezones.map((tz) => (
                 <option key={tz} value={tz}>
                   {tz}
@@ -173,11 +180,7 @@ function MeetingInput({
           <button type="button" onClick={() => setActiveTab("Events")}>
             Cancel
           </button>
-          <button
-            type="submit"
-            className={styles.submitBtn}
-            onClick={() => setToggleBanner(true)}
-          >
+          <button type="submit" className={styles.submitBtn}>
             Save
           </button>
         </div>
