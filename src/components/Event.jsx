@@ -1,18 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "../stylesheets/dashboard.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy, faPen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
+import { getBaseURI } from "../utils/config";
+import { toast } from "react-toastify";
 
-function Event({ setActiveTab, meetings, setMeetings, setFormData }) {
-  const [activeEvents, setActiveEvents] = useState(
-    meetings.reduce((acc, event) => ({ ...acc, [event.link]: true }), {})
-  );
+function Event({
+  setActiveTab,
+  meetings,
+  setMeetings,
+  setFormData,
+  setEditable,
+}) {
+  const toggleEvent = async (eventId, currentStatus) => {
+    const newStatus = !currentStatus;
 
-  const toggleEvent = (link) => {
-    setActiveEvents((prev) => ({
-      ...prev,
-      [link]: !prev[link],
-    }));
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `${getBaseURI()}/api/event/updateevent/${eventId}`,
+        { isActive: newStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setMeetings((prev) =>
+        prev.map((event) =>
+          event._id === eventId ? { ...event, isActive: newStatus } : event
+        )
+      );
+      newStatus
+        ? toast.info("Meeting set to Activated")
+        : toast.info("Meeting set to Deactivated");
+    } catch (error) {
+      console.error(
+        "Error updating event:",
+        error.response?.data || error.message
+      );
+    }
   };
 
   const copyLink = (link) => {
@@ -20,22 +45,33 @@ function Event({ setActiveTab, meetings, setMeetings, setFormData }) {
     alert("Meeting link copied!");
   };
 
-  const deleteMeeting = (link) => {
-    setMeetings((prev) => prev.filter((event) => event.link !== link));
+  const deleteMeeting = async (eventId) => {
+    try {
+      await axios.delete(`${getBaseURI()}/api/event/deleteevent/${eventId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      setMeetings((prev) => prev.filter((event) => event._id !== eventId));
+      toast.success("Meeting deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting meeting:", error.response?.data || error);
+      toast.error("Failed to delete meeting!");
+    }
   };
 
   const editMeeting = (event) => {
     setFormData(event);
+    setEditable(true);
     setActiveTab("CreateMeeting");
   };
 
   return (
     <div className={styles.eventContainer}>
       <div className={styles.upperContent}>
-        <div>
-          <h1>Event Types</h1>
-          <p>Create events to share for people to book on your calendar.</p>
-        </div>
+        <h1>Event Types</h1>
+        <p>Create events to share for people to book on your calendar.</p>
         <button
           className={styles.newEvent}
           type="submit"
@@ -51,9 +87,9 @@ function Event({ setActiveTab, meetings, setMeetings, setFormData }) {
         <div className={styles.eventList}>
           {meetings.map((event) => (
             <div
-              key={event.link}
+              key={event._id}
               className={
-                activeEvents[event.link]
+                event.isActive
                   ? styles.eventTileActive
                   : styles.eventTileInActive
               }
@@ -69,15 +105,15 @@ function Event({ setActiveTab, meetings, setMeetings, setFormData }) {
                 <span>
                   {event.time} {event.period}
                 </span>
-                <p>{event.duration}</p>
+                <p>{event.duration} minutes</p>
               </div>
 
               <div className={styles.eventFooter}>
                 <label className={styles.switch}>
                   <input
                     type="checkbox"
-                    checked={activeEvents[event.link]}
-                    onChange={() => toggleEvent(event.link)}
+                    checked={event.isActive}
+                    onChange={() => toggleEvent(event._id, event.isActive)}
                     className={styles.switchInput}
                   />
                   <span className={styles.switchSlider}></span>
@@ -85,7 +121,7 @@ function Event({ setActiveTab, meetings, setMeetings, setFormData }) {
                 <button onClick={() => copyLink(event.link)}>
                   <FontAwesomeIcon icon={faCopy} />
                 </button>
-                <button onClick={() => deleteMeeting(event.link)}>
+                <button onClick={() => deleteMeeting(event._id)}>
                   <FontAwesomeIcon icon={faTrashCan} />
                 </button>
               </div>

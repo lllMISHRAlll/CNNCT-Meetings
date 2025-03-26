@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import styles from "../stylesheets/createMeeting.module.css";
 import MeetingInput from "./MeetingInput";
 import MeetingBanner from "./MeetingBanner";
+import axios from "axios";
+import { getBaseURI } from "../utils/config.js";
+import { toast } from "react-toastify";
 
 function CreateMeeting({
   formData,
@@ -9,6 +12,7 @@ function CreateMeeting({
   addMeeting,
   setActiveTab,
   host,
+  editable,
 }) {
   const [showBanner, setShowBanner] = useState(false);
 
@@ -22,24 +26,82 @@ function CreateMeeting({
     setShowBanner(true);
   };
 
-  const handleBannerSubmit = (e) => {
+  const handleBannerSubmit = async (e) => {
     e.preventDefault();
-    addMeeting(formData);
-    setShowBanner(false);
-    setActiveTab("Events");
-    console.log(formData);
 
-    setFormData({
-      topic: "",
-      password: "",
-      host: "",
-      description: "",
-      date: "",
-      time: "",
-      period: "AM",
-      timezone: "",
-      duration: "",
-    });
+    try {
+      const userData = JSON.parse(
+        atob(localStorage.getItem("token").split(".")[1])
+      );
+      const userId = userData.userId;
+      const userEmail = userData.email;
+
+      const payload = {
+        topic: formData.topic,
+        password: formData.password,
+        description: formData.description,
+        date: formData.date,
+        time: formData.time,
+        period: formData.period,
+        timezone: formData.timezone,
+        duration: formData.duration,
+        link: formData.link,
+        createdBy: userId,
+        participants: [
+          { email: userEmail, status: "accepted", userId },
+          ...(formData.emails
+            ? formData.emails.split(",").map((email) => ({
+                email: email.trim(),
+                status: "pending",
+              }))
+            : []),
+        ],
+      };
+
+      let res;
+      if (editable && formData._id) {
+        res = await axios.put(
+          `${getBaseURI()}/api/event/updateevent/${formData._id}`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        toast.success("Meeting updated successfully!");
+      } else {
+        res = await axios.post(
+          `${getBaseURI()}/api/event/createevent`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        toast.success("Meeting created successfully!");
+        addMeeting(res.data);
+      }
+
+      setShowBanner(false);
+      setActiveTab("Events");
+
+      setFormData({
+        topic: "",
+        password: "",
+        description: "",
+        date: "",
+        time: "",
+        period: "AM",
+        timezone: "",
+        duration: "",
+        link: "",
+        emails: "",
+      });
+    } catch (error) {
+      console.error("Error processing meeting:", error.response?.data || error);
+    }
   };
 
   return (

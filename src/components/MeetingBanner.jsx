@@ -84,7 +84,7 @@ function MeetingBanner({
           Cancel
         </button>
         <button
-          type="submit"
+          type="button"
           className={styles.submitBtn}
           onClick={handleSubmit}
         >

@@ -5,6 +5,33 @@
   font-family: "Poppins";
 }
 
+.navigationMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding-bottom: 4rem;
+}
+
+.logoutBtn {
+  height: 2.5rem;
+  padding: 0.2rem 1rem;
+  margin: 0rem auto;
+  border: 2px solid black;
+  border-radius: 20px;
+  background-color: transparent;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.logoutBtn img {
+  object-fit: contain;
+  height: 100%;
+}
+
 .left {
   width: 22dvw;
 }
@@ -79,7 +106,8 @@
 }
 
 .eventList {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
 
@@ -220,6 +248,9 @@
 
 .bookingContent {
   padding: 0.5rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .meeting {
@@ -227,9 +258,18 @@
   justify-content: space-between;
 }
 
+.meetingTopic {
+  justify-content: center;
+}
+
 .meetingInner {
   display: flex;
-  gap: 15rem;
+  justify-content: space-between;
+  gap: 14rem;
+}
+
+.meetingDate {
+  width: 5rem;
 }
 
 .meetingInner h3 {
@@ -250,9 +290,38 @@
   color: #676767;
 }
 
+.statusBtn {
+  width: 13rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statusBtn button {
+  width: 5.5rem;
+  padding: 0.3rem 1rem;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 2px 1px 1px 1px rgba(0, 0, 0, 0.2);
+  display: flex;
+  gap: 0.3rem;
+}
+
+.rejectBtn {
+  background-color: #ed0000;
+  font-weight: 520;
+  color: white;
+}
+.acceptBtn {
+  background-color: #00c35f;
+  font-weight: 520;
+  color: white;
+}
+
 .participantsAndStatus {
   display: flex;
   gap: 5rem;
+  align-items: center;
 }
 
 .participantsAndStatus label {
@@ -264,7 +333,6 @@
 }
 
 .participantsAndStatus p {
-  margin-top: 0.5rem;
   color: #676767;
   cursor: pointer;
 }

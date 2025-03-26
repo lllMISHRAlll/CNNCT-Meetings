@@ -9,7 +9,6 @@ import { useState } from "react";
 
 function App() {
   const [host, setHost] = useState("");
-  console.log("host :", host);
   return (
     <Router>
       <Routes>

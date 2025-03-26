@@ -45,13 +45,10 @@ function MeetingInput({
 
     let day = value.slice(0, 2);
     let month = value.slice(2, 4);
-    let year = value.slice(4, 8);
+    let year = value.slice(4, 6);
 
     if (day > 31) day = "31";
-
     if (month > 12) month = "12";
-
-    if (year.length > 4) year = year.slice(0, 4);
 
     let formattedValue = day;
     if (month.length) formattedValue += "/" + month;
@@ -94,7 +91,7 @@ function MeetingInput({
           <input
             type="text"
             name="host"
-            value={host || formData.host}
+            value={sessionStorage.getItem("host")}
             onChange={handleChange}
             required
           />
@@ -164,7 +161,7 @@ function MeetingInput({
         <div className={styles.inputGroupSetDuration}>
           <label>Set Duration</label>
           <input
-            type="text"
+            type="number"
             name="duration"
             value={formData.duration}
             onChange={handleChange}

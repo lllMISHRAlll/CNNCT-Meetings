@@ -22,8 +22,7 @@ export default function SignUp({ setHost, host }) {
   const [selectedPreference, setSelectedPreference] = useState(null);
 
   const handleContinue = () => {
-    console.log("Hostname:", host);
-    console.log("Selected Preference:", selectedPreference);
+    sessionStorage.setItem("host", host);
     navigate("/dashboard");
   };
 

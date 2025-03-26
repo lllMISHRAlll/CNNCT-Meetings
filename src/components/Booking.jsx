@@ -1,25 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../stylesheets/dashboard.module.css";
 import Upcoming from "./Upcoming";
 import Pending from "./Pending";
 import Canceled from "./Canceled";
 import Past from "./Past";
 
-function Booking() {
-  const [activeTab, setActiveTab] = useState("Upcoming");
+function Booking({ meetings, hostId, setMeetings }) {
+  const [activeTab, setActiveTab] = useState("");
+  const isPending = activeTab === "Pending";
 
   const renderComponent = () => {
     switch (activeTab) {
-      case "Upcoming":
-        return <Upcoming />;
       case "Pending":
-        return <Pending />;
+        return (
+          <Pending
+            setMeetings={setMeetings}
+            meetings={meetings}
+            hostId={hostId}
+            isPending={isPending}
+            setActiveTab={setActiveTab}
+          />
+        );
       case "Canceled":
-        return <Canceled />;
+        return <Canceled meetings={meetings} hostId={hostId} />;
       case "Past":
-        return <Past />;
+        return <Past meetings={meetings} hostId={hostId} />;
       default:
-        return <Upcoming />;
+        return <Upcoming meetings={meetings} hostId={hostId} />;
     }
   };
 
