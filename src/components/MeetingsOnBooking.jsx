@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import style from "../stylesheets/dashboard.module.css";
 import { faBan, faCheck, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,23 +10,17 @@ export default function MeetingsOnBooking({
   event,
   isPending,
   hostId,
-  setActiveTab,
+  handleStatusChange,
+  btnEditable,
 }) {
   const [toggleMembersModal, settoggleMembersModal] = useState(false);
-  const [status, setStatus] = useState(
-    event.participants.find((p) => p.userId === hostId)?.status || "pending"
-  );
+  const currentStatus =
+    event.participants.find((p) => p.userId === hostId)?.status || "pending";
 
-  useEffect(() => {
-    setStatus(
-      event.participants.find((p) => p.userId === hostId)?.status || "pending"
-    );
-  }, [event]);
-
-  const updateStatus = async (eventId, newStatus) => {
+  const updateStatus = async (newStatus) => {
     try {
-      const response = await axios.patch(
-        `${getBaseURI()}/api/event/updatestatus/${eventId}`,
+      await axios.patch(
+        `${getBaseURI()}/api/event/updatestatus/${event._id}`,
         { status: newStatus },
         {
           headers: {
@@ -35,9 +29,8 @@ export default function MeetingsOnBooking({
         }
       );
 
-      setStatus(newStatus);
-      newStatus === "accepted" ? setActiveTab("") : setActiveTab("Canceled");
       toast.info(`Meeting ${newStatus}`);
+      handleStatusChange?.(event._id, newStatus);
     } catch (error) {
       console.error("Error updating status:", error.response?.data || error);
       toast.error("Failed to update status");
@@ -64,7 +57,7 @@ export default function MeetingsOnBooking({
           <button
             type="submit"
             className={style.rejectBtn}
-            onClick={() => updateStatus(event._id, "rejected")}
+            onClick={() => updateStatus("rejected")}
           >
             <FontAwesomeIcon icon={faBan} />
             Reject
@@ -72,7 +65,7 @@ export default function MeetingsOnBooking({
           <button
             type="submit"
             className={style.acceptBtn}
-            onClick={() => updateStatus(event._id, "accepted")}
+            onClick={() => updateStatus("accepted")}
           >
             <FontAwesomeIcon icon={faCheck} />
             Accept
@@ -81,7 +74,7 @@ export default function MeetingsOnBooking({
       )}
 
       <div className={style.participantsAndStatus}>
-        {!isPending && <label>{status}</label>}
+        {!isPending && <label>{currentStatus}</label>}
 
         <p onClick={() => settoggleMembersModal(!toggleMembersModal)}>
           <FontAwesomeIcon icon={faUserGroup} /> &nbsp;
@@ -90,17 +83,39 @@ export default function MeetingsOnBooking({
 
         {toggleMembersModal && (
           <div className={style.membersModal}>
-            <h2>Participants</h2>
+            <h2>
+              Participants <span>({event.participants.length})</span>
+              {isPending && (
+                <div className={style.statusBtnModal}>
+                  <button
+                    type="submit"
+                    className={style.rejectBtn}
+                    onClick={() => updateStatus("rejected")}
+                  >
+                    <FontAwesomeIcon icon={faBan} />
+                    Reject
+                  </button>
+                  <button
+                    type="submit"
+                    className={style.acceptBtn}
+                    onClick={() => updateStatus("accepted")}
+                  >
+                    <FontAwesomeIcon icon={faCheck} />
+                    Accept
+                  </button>
+                </div>
+              )}
+            </h2>
             <div className={style.memberList}>
               <ul>
                 {event.participants.map((p, index) => (
                   <li key={index}>
+                    <p>{p.name || "NA"}</p>
                     <input
                       type="checkbox"
-                      checked={p.status === "accepted"}
+                      checked={p.status === "ACCEPTED"}
                       readOnly
                     />
-                    {p.email} ({p.status})
                   </li>
                 ))}
               </ul>

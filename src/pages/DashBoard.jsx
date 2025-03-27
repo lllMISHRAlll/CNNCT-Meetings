@@ -17,6 +17,7 @@ function Dashboard({ host }) {
   const [meetings, setMeetings] = useState([]);
   const [hostId, setHostId] = useState();
   const [activeTab, setActiveTab] = useState("");
+  const [availability, setAvailability] = useState(null);
   const [formData, setFormData] = useState({
     topic: "",
     password: "",
@@ -31,30 +32,29 @@ function Dashboard({ host }) {
     emails: "",
   });
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    const fetchUserInfo = async () => {
-      try {
-        if (!token) {
-          toast.error("Something went wrong. Please log in again.");
-          return;
-        }
-
-        const res = await axios.get(`${getBaseURI()}/api/user/userinfo`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        setInitialEmail(res.data.user.email);
-        setUser(res.data.user);
-      } catch (error) {
-        console.error(
-          "Error fetching user info:",
-          error.response?.data || error.message
-        );
+  const fetchUserInfo = async () => {
+    try {
+      if (!token) {
+        toast.error("Something went wrong. Please log in again.");
+        return;
       }
-    };
 
+      const res = await axios.get(`${getBaseURI()}/api/user/userinfo`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+
+      setAvailability(res.data?.user?.availability);
+      setInitialEmail(res.data.user.email);
+      setUser(res.data.user);
+    } catch (error) {
+      console.error(
+        "Error fetching user info:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  useEffect(() => {
     fetchUserInfo();
   }, []);
 
@@ -112,7 +112,13 @@ function Dashboard({ host }) {
       case "Settings":
         return <UserProfile user={user} initialEmail={initialEmail} />;
       case "Availability":
-        return <Availability />;
+        return (
+          <Availability
+            fetchUserInfo={fetchUserInfo}
+            availability={availability}
+            setAvailability={setAvailability}
+          />
+        );
       default:
         return (
           <Event

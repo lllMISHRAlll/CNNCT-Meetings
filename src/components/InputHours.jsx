@@ -1,45 +1,76 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styles from "../stylesheets/availability.module.css";
-import { faCopy } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { getBaseURI } from "../utils/config";
+import { toast } from "react-toastify";
 
-const InputHours = () => {
-  const [hours, setHours] = useState({
-    Mon: [{ id: 1, from: "", to: "" }],
-    Tue: [{ id: 1, from: "", to: "" }],
-    Wed: [{ id: 1, from: "", to: "" }],
-    Thu: [{ id: 1, from: "", to: "" }],
-    Fri: [{ id: 1, from: "", to: "" }],
-    Sat: [{ id: 1, from: "", to: "" }],
-  });
+const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const AM_PM_OPTIONS = ["AM", "PM"];
 
+const convertTo24Hour = (time, period) => {
+  if (!time) return "00:00";
+  let [hour, minute] = time.split(":").map((num) => Number(num) || 0);
+  if (period === "PM" && hour !== 12) hour += 12;
+  if (period === "AM" && hour === 12) hour = 0;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+};
+
+const convertTo12Hour = (time) => {
+  if (!time) return { time: "12:00", period: "AM" };
+  let [hour, minute] = time.split(":").map((num) => Number(num) || 0);
+  let period = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12;
+  return {
+    time: `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`,
+    period,
+  };
+};
+
+const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
+  const [hours, setHours] = useState({});
   const [activeDays, setActiveDays] = useState(
-    Object.keys(hours).reduce((acc, day) => ({ ...acc, [day]: true }), {})
+    WEEKDAYS.reduce((acc, day) => ({ ...acc, [day]: day !== "Sun" }), {})
   );
 
-  const addTimeSlot = (day) => {
-    setHours((prev) => ({
-      ...prev,
-      [day]: [...prev[day], { id: Date.now(), from: "", to: "" }],
-    }));
-  };
+  useEffect(() => {
+    const updatedHours = {};
+    WEEKDAYS.forEach((day) => {
+      updatedHours[day] = availability?.[day]?.map((slot) => {
+        let from = convertTo12Hour(slot.from);
+        let to = convertTo12Hour(slot.to);
+        return { from, to };
+      }) || [{ from: convertTo12Hour("00:00"), to: convertTo12Hour("00:00") }];
+    });
+    setHours(updatedHours);
+  }, [availability]);
 
-  const removeTimeSlot = (day, id) => {
-    setHours((prev) => ({
-      ...prev,
-      [day]:
-        prev[day].length > 1
-          ? prev[day].filter((slot) => slot.id !== id)
-          : prev[day],
-    }));
-  };
+  const saveAvailability = async () => {
+    try {
+      const formattedAvailability = {};
+      Object.keys(hours).forEach((day) => {
+        if (day === "Sun") return;
+        formattedAvailability[day] = hours[day].map((slot) => ({
+          from: convertTo24Hour(slot.from.time, slot.from.period),
+          to: convertTo24Hour(slot.to.time, slot.to.period),
+        }));
+      });
 
-  const toggleDay = (day) => {
-    setActiveDays((prev) => ({
-      ...prev,
-      [day]: !prev[day],
-    }));
+      const res = await axios.post(
+        `${getBaseURI()}/api/availability/inputhours`,
+        { availability: formattedAvailability },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setAvailability(res.data.availability);
+      toast.success("Available Hours Updated Successfully");
+      fetchUserInfo();
+    } catch (err) {
+      console.error("Error saving availability:", err);
+    }
   };
 
   return (
@@ -62,63 +93,165 @@ const InputHours = () => {
       <div className={styles.weeklyHours}>
         <p>Weekly hours</p>
 
-        <div className={styles.sundayContainer}>
-          <div className={styles.sundayRow}>
-            <input type="checkbox" checked disabled />
-            <span>Sun</span>
+        <div className={styles.otherDaysContainer}>
+          <div className={styles.sundayContainer}>
+            <input
+              className={styles.sundayInput}
+              type="checkbox"
+              checked
+              disabled
+            />
+            <span className={styles.dayName}>Sun</span>
             <span className={styles.unavailableText}>Unavailable</span>
           </div>
-        </div>
 
-        <div className={styles.otherDaysContainer}>
-          {Object.keys(hours).map((day) => (
+          {WEEKDAYS.filter((day) => day !== "Sun").map((day) => (
             <div key={day} className={styles.dayRow}>
               <input
                 type="checkbox"
                 checked={activeDays[day]}
-                onChange={() => toggleDay(day)}
+                onChange={() =>
+                  setActiveDays({ ...activeDays, [day]: !activeDays[day] })
+                }
               />
               <span className={styles.dayName}>{day}</span>
 
               <div className={styles.timeSlots}>
-                <AnimatePresence>
-                  {hours[day].map((slot) => (
-                    <motion.div
-                      key={slot.id}
-                      className={styles.inputHrWrapper}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <input type="time" disabled={!activeDays[day]} />
-                      <span>-</span>
-                      <input type="time" disabled={!activeDays[day]} />
-                      <button
-                        className={styles.delete}
-                        onClick={() => removeTimeSlot(day, slot.id)}
-                        disabled={hours[day].length === 1}
+                {hours[day]?.map((slot, index) => (
+                  <div key={index} className={styles.inputHrWrapper}>
+                    <div className={styles.timeWrapper}>
+                      <input
+                        type="text"
+                        value={slot.from.time}
+                        onChange={(e) =>
+                          setHours((prev) => ({
+                            ...prev,
+                            [day]: prev[day].map((s, i) =>
+                              i === index
+                                ? {
+                                    ...s,
+                                    from: { ...s.from, time: e.target.value },
+                                  }
+                                : s
+                            ),
+                          }))
+                        }
+                        placeholder="HH:MM"
+                        disabled={!activeDays[day]}
+                      />
+                      <select
+                        value={slot.from.period}
+                        onChange={(e) =>
+                          setHours((prev) => ({
+                            ...prev,
+                            [day]: prev[day].map((s, i) =>
+                              i === index
+                                ? {
+                                    ...s,
+                                    from: { ...s.from, period: e.target.value },
+                                  }
+                                : s
+                            ),
+                          }))
+                        }
+                        disabled={!activeDays[day]}
                       >
-                        ×
-                      </button>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
+                        {AM_PM_OPTIONS.map((ampm) => (
+                          <option key={ampm} value={ampm}>
+                            {ampm}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <span>-</span>
+
+                    <div className={styles.timeWrapper}>
+                      <input
+                        type="text"
+                        value={slot.to.time}
+                        onChange={(e) =>
+                          setHours((prev) => ({
+                            ...prev,
+                            [day]: prev[day].map((s, i) =>
+                              i === index
+                                ? {
+                                    ...s,
+                                    to: { ...s.to, time: e.target.value },
+                                  }
+                                : s
+                            ),
+                          }))
+                        }
+                        placeholder="HH:MM"
+                        disabled={!activeDays[day]}
+                      />
+                      <select
+                        value={slot.to.period}
+                        onChange={(e) =>
+                          setHours((prev) => ({
+                            ...prev,
+                            [day]: prev[day].map((s, i) =>
+                              i === index
+                                ? {
+                                    ...s,
+                                    to: { ...s.to, period: e.target.value },
+                                  }
+                                : s
+                            ),
+                          }))
+                        }
+                        disabled={!activeDays[day]}
+                      >
+                        {AM_PM_OPTIONS.map((ampm) => (
+                          <option key={ampm} value={ampm}>
+                            {ampm}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <button
+                      className={styles.delete}
+                      onClick={() =>
+                        setHours((prev) => ({
+                          ...prev,
+                          [day]: prev[day].filter((_, i) => i !== index),
+                        }))
+                      }
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
               </div>
 
               <button
                 className={styles.add}
-                onClick={() => addTimeSlot(day)}
-                disabled={!activeDays[day]}
+                onClick={() =>
+                  setHours((prev) => ({
+                    ...prev,
+                    [day]: [
+                      ...(prev[day] || []),
+                      {
+                        from: convertTo12Hour("00:00"),
+                        to: convertTo12Hour("00:00"),
+                      },
+                    ],
+                  }))
+                }
               >
                 +
-              </button>
-              <button className={styles.copy} disabled={!activeDays[day]}>
-                <FontAwesomeIcon icon={faCopy} />
               </button>
             </div>
           ))}
         </div>
+      </div>
+
+      <div className={styles.saveBtn}>
+        <button className={styles.saveButton} onClick={saveAvailability}>
+          Save
+        </button>
       </div>
     </div>
   );

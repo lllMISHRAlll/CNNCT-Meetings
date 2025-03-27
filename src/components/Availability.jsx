@@ -3,26 +3,10 @@ import styles from "../stylesheets/availability.module.css";
 import InputHours from "./InputHours";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faList } from "@fortawesome/free-solid-svg-icons";
-import moment from "moment";
 import CustomCalendar from "./Calender";
 
-const Availability = () => {
+const Availability = ({ availability, setAvailability, fetchUserInfo }) => {
   const [activeView, setActiveView] = useState("Availability");
-  const [calendarView, setCalendarView] = useState("month");
-  const [date, setDate] = useState(moment().toDate());
-
-  const events = [
-    {
-      title: "Team Meeting",
-      start: new Date(2025, 2, 25, 10, 0),
-      end: new Date(2025, 2, 25, 11, 0),
-    },
-    {
-      title: "Project Deadline",
-      start: new Date(2025, 2, 31, 15, 0),
-      end: new Date(2025, 2, 31, 16, 0),
-    },
-  ];
 
   return (
     <div className={styles.main}>
@@ -48,15 +32,13 @@ const Availability = () => {
 
       <div className={styles.container}>
         {activeView === "Availability" ? (
-          <InputHours />
-        ) : (
-          <CustomCalendar
-            view={calendarView}
-            setView={setCalendarView}
-            date={date}
-            setDate={setDate}
-            events={events}
+          <InputHours
+            fetchUserInfo={fetchUserInfo}
+            availability={availability}
+            setAvailability={setAvailability}
           />
+        ) : (
+          <CustomCalendar />
         )}
       </div>
     </div>

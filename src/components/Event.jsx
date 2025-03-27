@@ -70,8 +70,11 @@ function Event({
   return (
     <div className={styles.eventContainer}>
       <div className={styles.upperContent}>
-        <h1>Event Types</h1>
-        <p>Create events to share for people to book on your calendar.</p>
+        <div>
+          <h1>Event Types</h1>
+          <p>Create events to share for people to book on your calendar.</p>
+        </div>
+
         <button
           className={styles.newEvent}
           type="submit"

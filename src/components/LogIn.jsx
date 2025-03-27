@@ -73,7 +73,7 @@ export default function Login() {
       const res = await axios.post(`${getBaseURI()}/api/auth/login`, payload);
       localStorage.setItem("token", res.data.token);
       toast.success(res.data.message);
-      navigate("/preference");
+      navigate("/dashboard");
     } catch (error) {
       console.error("Login Failed", error.response?.data || error.message);
       toast.error(
