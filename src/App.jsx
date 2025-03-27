@@ -8,18 +8,33 @@ import DashBoard from "./pages/DashBoard";
 import { useState } from "react";
 
 function App() {
-  const [host, setHost] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    termsAccepted: false,
+    userName: "",
+    preference: "",
+  });
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route
+          path="/signup"
+          element={<SignUp formData={formData} setFormData={setFormData} />}
+        />
         <Route path="/login" element={<LogIn />} />
         <Route
           path="/preference"
-          element={<Preferences setHost={setHost} host={host} />}
+          element={
+            <Preferences formData={formData} setFormData={setFormData} />
+          }
         />
-        <Route path="/dashboard" element={<DashBoard host={host} />} />
+        <Route path="/dashboard" element={<DashBoard />} />
       </Routes>
     </Router>
   );

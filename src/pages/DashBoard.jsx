@@ -34,13 +34,14 @@ function Dashboard({ host }) {
 
   const fetchUserInfo = async () => {
     try {
+      const token = localStorage.getItem("token");
       if (!token) {
         toast.error("Something went wrong. Please log in again.");
         return;
       }
 
       const res = await axios.get(`${getBaseURI()}/api/user/userinfo`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setAvailability(res.data?.user?.availability);

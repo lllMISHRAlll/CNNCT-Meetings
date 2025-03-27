@@ -4,87 +4,67 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
-import { getBaseURI } from "../utils/config.js";
 
-export default function SignUp() {
+export default function SignUp({ formData, setFormData }) {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    termsAccepted: false,
-  });
-
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    const hasErrors = Object.values(errors).some((error) => error);
-    const allFieldsFilled = Object.keys(formData).every(
-      (key) => key === "termsAccepted" || formData[key]
-    );
-    setIsFormValid(!hasErrors && allFieldsFilled && formData.termsAccepted);
-  }, [formData, errors]);
-
   const validate = (name, value) => {
-    let error = "";
+    if (!value && name !== "termsAccepted") return `${name} is required`;
 
-    if (!value) error = `${name} is required`;
-
-    if (name === "email") {
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(value)) error = "Invalid email format";
+    switch (name) {
+      case "email":
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+          ? ""
+          : "Invalid email format";
+      case "password":
+        return /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+          value
+        )
+          ? ""
+          : "Password must be 8+ chars with 1 uppercase, 1 number, and 1 special character";
+      case "confirmPassword":
+        return value === formData.password ? "" : "Passwords don't match";
+      default:
+        return "";
     }
-
-    if (name === "password") {
-      const passwordPattern =
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      if (!passwordPattern.test(value))
-        error =
-          "Password must be at least 8 characters long, include an uppercase letter, a number, and a special character.";
-    }
-
-    if (name === "confirmPassword" && value !== formData.password) {
-      error = "Passwords do not match";
-    }
-
-    return error;
   };
+
+  useEffect(() => {
+    const signupFields = [
+      "firstName",
+      "lastName",
+      "email",
+      "password",
+      "confirmPassword",
+      "termsAccepted",
+    ];
+
+    const noErrors = signupFields.every((field) => !errors[field]);
+    const allRequiredFilled = signupFields.every((field) =>
+      field === "termsAccepted" ? formData[field] : Boolean(formData[field])
+    );
+
+    setIsFormValid(noErrors && allRequiredFilled);
+  }, [formData, errors]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const fieldValue = type === "checkbox" ? checked : value;
 
     setFormData((prev) => ({ ...prev, [name]: fieldValue }));
-
-    setErrors((prev) => ({
-      ...prev,
-      [name]: validate(name, fieldValue),
-    }));
+    setErrors((prev) => ({ ...prev, [name]: validate(name, fieldValue) }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isFormValid) return toast.error("Fill Valid Details");
-
-    const payload = {
-      name: `${formData.firstName} ${formData.lastName}`.trim(),
-      email: formData.email,
-      password: formData.password,
-    };
-
-    try {
-      const res = await axios.post(`${getBaseURI()}/api/auth/signup`, payload);
-      toast.success(res.data);
-      navigate("/preference");
-    } catch (error) {
-      console.error("Signup Error:", error);
-      toast.error(error.response?.data?.message || "Something went wrong");
+    if (!isFormValid) {
+      toast.error("Please fill all required fields correctly");
+      return;
     }
+    navigate("/preference");
   };
 
   return (
