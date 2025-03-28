@@ -111,7 +111,13 @@ function Dashboard({ host }) {
           />
         );
       case "Settings":
-        return <UserProfile user={user} initialEmail={initialEmail} />;
+        return (
+          <UserProfile
+            user={user}
+            initialEmail={initialEmail}
+            fetchUserInfo={fetchUserInfo}
+          />
+        );
       case "Availability":
         return (
           <Availability

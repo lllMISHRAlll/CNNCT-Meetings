@@ -9,17 +9,48 @@ const AM_PM_OPTIONS = ["AM", "PM"];
 
 const convertTo24Hour = (time, period) => {
   if (!time) return "00:00";
-  let [hour, minute] = time.split(":").map((num) => Number(num) || 0);
-  if (period === "PM" && hour !== 12) hour += 12;
-  if (period === "AM" && hour === 12) hour = 0;
+
+  const cleanedTime = time.trim().replace(/\s/g, "");
+  let [hour, minute] = cleanedTime
+    .split(":")
+    .map((num) => parseInt(num, 10) || 0);
+
+  minute = Math.min(59, Math.max(0, minute));
+  hour = Math.min(23, Math.max(0, hour));
+
+  if (period === "PM" && hour < 12) {
+    hour += 12;
+  }
+  if (period === "AM" && hour === 12) {
+    hour = 0;
+  }
+
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 };
 
 const convertTo12Hour = (time) => {
   if (!time) return { time: "12:00", period: "AM" };
-  let [hour, minute] = time.split(":").map((num) => Number(num) || 0);
-  let period = hour >= 12 ? "PM" : "AM";
-  hour = hour % 12 || 12;
+
+  const cleanedTime = time.trim().replace(/\s/g, "");
+  let [hour, minute] = cleanedTime
+    .split(":")
+    .map((num) => parseInt(num, 10) || 0);
+
+  minute = Math.min(59, Math.max(0, minute));
+  hour = Math.min(23, Math.max(0, hour));
+
+  let period = "AM";
+
+  if (hour >= 12) {
+    period = "PM";
+    if (hour > 12) {
+      hour -= 12;
+    }
+  }
+  if (hour === 0) {
+    hour = 12;
+  }
+
   return {
     time: `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`,
     period,
@@ -36,10 +67,15 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
     const updatedHours = {};
     WEEKDAYS.forEach((day) => {
       updatedHours[day] = availability?.[day]?.map((slot) => {
-        let from = convertTo12Hour(slot.from);
-        let to = convertTo12Hour(slot.to);
+        let from = convertTo12Hour(slot.from || "00:00");
+        let to = convertTo12Hour(slot.to || "23:59");
         return { from, to };
-      }) || [{ from: convertTo12Hour("00:00"), to: convertTo12Hour("00:00") }];
+      }) || [
+        {
+          from: convertTo12Hour("00:00"),
+          to: convertTo12Hour("23:59"),
+        },
+      ];
     });
     setHours(updatedHours);
   }, [availability]);
@@ -235,7 +271,7 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
                       ...(prev[day] || []),
                       {
                         from: convertTo12Hour("00:00"),
-                        to: convertTo12Hour("00:00"),
+                        to: convertTo12Hour("23:59"),
                       },
                     ],
                   }))

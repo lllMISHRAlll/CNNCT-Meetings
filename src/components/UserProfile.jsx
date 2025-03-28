@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import { getBaseURI } from "../utils/config";
 
-function UseProfile({ user, initialEmail }) {
+function UseProfile({ user, initialEmail, fetchUserInfo }) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -24,8 +24,6 @@ function UseProfile({ user, initialEmail }) {
         firstName: nameParts[0] || "",
         lastName: nameParts.slice(1).join(" ") || "",
         email: user.email || "",
-        password: user.password || "",
-        confirmPassword: user.password || "",
       }));
     }
   }, [user]);
@@ -60,11 +58,9 @@ function UseProfile({ user, initialEmail }) {
       );
 
       toast.success(res.data.message);
+      fetchUserInfo();
 
-      if (
-        formData.email !== initialEmail ||
-        formData.password !== user.password
-      ) {
+      if (formData.email !== initialEmail || formData.password) {
         localStorage.removeItem("token");
         navigate("/login");
       }

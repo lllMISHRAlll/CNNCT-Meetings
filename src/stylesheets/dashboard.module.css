@@ -109,6 +109,41 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+  position: relative;
+}
+
+.conflictShow {
+  position: absolute;
+  top: 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+}
+
+.conflictText {
+  background-color: white;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  color: #5a5a5a;
+  border-radius: 50px;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+
+.conflictIcon {
+  background-color: transparent;
+  border: none;
+  height: 0;
+}
+
+.conflictIcon:hover + .conflictText {
+  opacity: 1;
+  visibility: visible;
+}
+.conflictText p {
+  font-size: 0.7rem;
 }
 
 .eventTileActive {

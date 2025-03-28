@@ -34,7 +34,7 @@ function MeetingInput({
   const validateForm = () => {
     const newErrors = {};
     if (!formData.topic.trim()) newErrors.topic = true;
-    if (!formData.host.trim()) newErrors.host = true;
+    if (!formData.host?.trim()) newErrors.host = true;
     if (!formData.date.trim()) newErrors.date = true;
     if (!formData.time.trim()) newErrors.time = true;
     if (!formData.timezone.trim()) newErrors.timezone = true;
@@ -54,12 +54,15 @@ function MeetingInput({
     let value = e.target.value.replace(/\D/g, "");
     let day = value.slice(0, 2);
     let month = value.slice(2, 4);
-    let year = value.slice(4, 6);
-    if (day > 31) day = "31";
-    if (month > 12) month = "12";
+    let year = value.slice(4, 8);
+
+    if (parseInt(day) > 31) day = "31";
+    if (parseInt(month) > 12) month = "12";
+
     let formattedValue = day;
     if (month.length) formattedValue += "/" + month;
     if (year.length) formattedValue += "/" + year;
+
     handleChange({ target: { name: "date", value: formattedValue } });
   };
 
@@ -99,7 +102,7 @@ function MeetingInput({
           <input
             type="text"
             name="host"
-            value={sessionStorage.getItem("host")}
+            value={localStorage.getItem("username")}
             onChange={handleChange}
             style={{ borderColor: errors.host ? "red" : "" }}
           />

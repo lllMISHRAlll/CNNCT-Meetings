@@ -54,7 +54,7 @@ function Navigation({ activeTab, setActiveTab }) {
       </div>
       <button className={styles.logoutBtn} type="submit" onClick={handleLogOut}>
         <img src="assets/Rectangle 5526.png" />
-        {sessionStorage.getItem("host")}
+        {localStorage.getItem("username")}
       </button>
     </div>
   );
