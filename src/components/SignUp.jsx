@@ -10,6 +10,7 @@ export default function SignUp({ formData, setFormData }) {
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validate = (name, value) => {
     if (!value && name !== "termsAccepted") return `${name} is required`;
@@ -129,15 +130,25 @@ export default function SignUp({ formData, setFormData }) {
 
             <div className={style.signUpForm}>
               <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
-                id="confirmPassword"
-                type={showPassword ? "text" : "password"}
-                name="confirmPassword"
-                placeholder="Re-enter Password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className={errors.confirmPassword ? style.inputError : ""}
-              />
+              <div className={style.passwordContainer}>
+                <input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  placeholder="Re-enter Password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className={errors.confirmPassword ? style.inputError : ""}
+                />
+                <span
+                  className={style.eyeIcon}
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                >
+                  <FontAwesomeIcon
+                    icon={showConfirmPassword ? faEye : faEyeSlash}
+                  />
+                </span>
+              </div>
               {errors.confirmPassword && (
                 <p className={style.error}>{errors.confirmPassword}</p>
               )}

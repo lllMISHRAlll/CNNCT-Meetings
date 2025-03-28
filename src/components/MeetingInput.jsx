@@ -34,7 +34,6 @@ function MeetingInput({
   const validateForm = () => {
     const newErrors = {};
     if (!formData.topic.trim()) newErrors.topic = true;
-    if (!formData.host?.trim()) newErrors.host = true;
     if (!formData.date.trim()) newErrors.date = true;
     if (!formData.time.trim()) newErrors.time = true;
     if (!formData.timezone.trim()) newErrors.timezone = true;

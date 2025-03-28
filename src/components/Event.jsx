@@ -19,10 +19,9 @@ function Event({
   setEditable,
 }) {
   const [conflict, setConflict] = useState();
-  const [processedConflicts, setProcessedConflicts] = useState(new Map());
+
   const toggleEvent = async (eventId, currentStatus) => {
     const newStatus = !currentStatus;
-
     try {
       const token = localStorage.getItem("token");
       await axios.put(
@@ -36,9 +35,9 @@ function Event({
           event._id === eventId ? { ...event, isActive: newStatus } : event
         )
       );
-      newStatus
-        ? toast.info("Meeting set to Activated")
-        : toast.info("Meeting set to Deactivated");
+      toast.info(
+        newStatus ? "Meeting set to Activated" : "Meeting set to Deactivated"
+      );
     } catch (error) {
       console.error(
         "Error updating event:",
@@ -55,9 +54,7 @@ function Event({
   const deleteMeeting = async (eventId) => {
     try {
       await axios.delete(`${getBaseURI()}/api/event/deleteevent/${eventId}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
 
       setMeetings((prev) => prev.filter((event) => event._id !== eventId));
@@ -109,6 +106,26 @@ function Event({
     fetchConflicts();
   }, []);
 
+  const decodeToken = () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found in localStorage");
+      return null;
+    }
+
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const decodedPayload = JSON.parse(atob(base64));
+      return decodedPayload;
+    } catch (error) {
+      console.error("Invalid token:", error);
+      return null;
+    }
+  };
+
+  const dcToken = decodeToken();
+
   return (
     <div className={styles.eventContainer}>
       <div className={styles.upperContent}>
@@ -130,93 +147,90 @@ function Event({
         <h2 className={styles.noMeetings}>No meetings are scheduled.</h2>
       ) : (
         <div className={styles.eventList}>
-          {(() => {
-            const processedConflicts = new Map();
+          {meetings.map((event) => {
+            const hasConflict = conflict?.eventConflict.some(
+              ({ e1 }) => e1 === event._id
+            );
+            const isAvailable = conflict?.availableForThisMeeting.some(
+              (availability) => Object.keys(availability)[0] === event._id
+            );
 
-            if (conflict) {
-              conflict.eventConflict.forEach(({ e1 }) => {
-                processedConflicts.set(e1, { conflict: true });
-              });
+            const canEdit = dcToken.userId === event.createdBy;
 
-              conflict.availableForThisMeeting.forEach((availability) => {
-                const eventId = Object.keys(availability)[0];
-                const isAvailable = availability[eventId];
-                if (!processedConflicts.has(eventId)) {
-                  processedConflicts.set(eventId, {});
+            return (
+              <div
+                key={event._id}
+                className={
+                  event.isActive
+                    ? styles.eventTileActive
+                    : styles.eventTileInActive
                 }
-                processedConflicts.get(eventId).available = isAvailable;
-              });
-            }
-
-            return meetings.map((event) => {
-              const conflictData = processedConflicts.get(event._id);
-              const hasConflict = conflictData?.conflict || false;
-              const isAvailable = conflictData?.available ?? true;
-
-              return (
-                <div
-                  key={event._id}
-                  className={
-                    event.isActive
-                      ? styles.eventTileActive
-                      : styles.eventTileInActive
-                  }
-                >
-                  {(hasConflict || !isAvailable) && (
-                    <div className={styles.conflictShow}>
-                      <div className={styles.conflictIcon}>
-                        <FontAwesomeIcon
-                          icon={faCircleExclamation}
-                          style={{ color: "#ed0000" }}
-                        />
-                      </div>
-                      <div className={styles.conflictText}>
-                        {hasConflict && <p>Conflict of Timing</p>}
-                        {!isAvailable && (
-                          <p>You are not Available for this Meeting</p>
-                        )}
-                      </div>
+              >
+                {(hasConflict || !isAvailable) && (
+                  <div className={styles.conflictShow}>
+                    <div className={styles.conflictIcon}>
+                      <FontAwesomeIcon
+                        icon={faCircleExclamation}
+                        style={{ color: "#ed0000" }}
+                      />
                     </div>
-                  )}
+                    <div className={styles.conflictText}>
+                      {hasConflict && <p>Conflict of Timing</p>}
+                      {!isAvailable && (
+                        <p>You are not Available for this Meeting</p>
+                      )}
+                    </div>
+                  </div>
+                )}
 
-                  <div className={styles.eventHeader}>
-                    <span>{event.topic}</span>
+                <div className={styles.eventHeader}>
+                  <span>{event.topic}</span>
+                  {canEdit && (
                     <button type="button" onClick={() => editMeeting(event)}>
                       <FontAwesomeIcon icon={faPen} />
                     </button>
-                  </div>
+                  )}
+                </div>
 
-                  <div className={styles.eventdatesANdInfo}>
-                    <div>{event.date}</div>
-                    <span>
-                      {event.time} {event.period}
-                    </span>
-                    <p>
-                      {event.duration} {event.duration > 1 ? "hours" : "hour"}
-                    </p>
-                  </div>
+                <div className={styles.eventdatesANdInfo}>
+                  <div>{event.date}</div>
+                  <span>
+                    {event.time} {event.period}
+                  </span>
+                  <p>
+                    {event.duration} {event.duration > 1 ? "hours" : "hour"}
+                  </p>
+                </div>
 
-                  <div className={styles.eventFooter}>
-                    <label className={styles.switch}>
-                      <input
-                        type="checkbox"
-                        checked={event.isActive}
-                        onChange={() => toggleEvent(event._id, event.isActive)}
-                        className={styles.switchInput}
-                      />
-                      <span className={styles.switchSlider}></span>
-                    </label>
+                <div className={styles.eventFooter}>
+                  <>
+                    {canEdit && (
+                      <label className={styles.switch}>
+                        <input
+                          type="checkbox"
+                          checked={event.isActive}
+                          onChange={() =>
+                            toggleEvent(event._id, event.isActive)
+                          }
+                          className={styles.switchInput}
+                        />
+                        <span className={styles.switchSlider}></span>
+                      </label>
+                    )}
+
                     <button onClick={() => copyLink(event.link)}>
                       <FontAwesomeIcon icon={faCopy} />
                     </button>
-                    <button onClick={() => deleteMeeting(event._id)}>
-                      <FontAwesomeIcon icon={faTrashCan} />
-                    </button>
-                  </div>
+                    {canEdit && (
+                      <button onClick={() => deleteMeeting(event._id)}>
+                        <FontAwesomeIcon icon={faTrashCan} />
+                      </button>
+                    )}
+                  </>
                 </div>
-              );
-            });
-          })()}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

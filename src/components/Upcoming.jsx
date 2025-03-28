@@ -5,9 +5,13 @@ import MeetingsOnBooking from "./MeetingsOnBooking";
 export default function Upcoming({ meetings, hostId }) {
   return (
     <div className={styles.bookingContent}>
-      {meetings.map((event) => (
-        <MeetingsOnBooking key={event._id} event={event} hostId={hostId} />
-      ))}
+      {meetings.length > 0 ? (
+        meetings.map((event) => (
+          <MeetingsOnBooking key={event._id} event={event} hostId={hostId} />
+        ))
+      ) : (
+        <h1 className={styles.noMeetings}>No Meetings Ahead</h1>
+      )}
     </div>
   );
 }

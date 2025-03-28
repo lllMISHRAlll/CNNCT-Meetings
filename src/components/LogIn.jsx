@@ -64,8 +64,10 @@ export default function Login() {
     e.preventDefault();
     if (!isFormValid) return;
 
+    const isEmail = formData.emailOrUsername.includes("@");
+
     const payload = {
-      email: formData.emailOrUsername,
+      [isEmail ? "email" : "username"]: formData.emailOrUsername,
       password: formData.password,
     };
 
