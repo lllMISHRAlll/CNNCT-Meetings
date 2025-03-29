@@ -37,6 +37,8 @@ function MeetingInput({
     if (!formData.date.trim()) newErrors.date = true;
     if (!formData.time.trim()) newErrors.time = true;
     if (!formData.timezone.trim()) newErrors.timezone = true;
+    if (formData.date.trim() && !/^\d{2}\/\d{2}\/\d{4}$/.test(formData.date)) newErrors.date = true;
+
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;

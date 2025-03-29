@@ -66,7 +66,11 @@ function Event({
   };
 
   const editMeeting = (event) => {
-    setFormData(event);
+    const currentEvent = {
+      ...event,
+      emails: event.participants?.map((p) => p.email).join(','),
+    }
+    setFormData(currentEvent);
     setEditable(true);
     setActiveTab("CreateMeeting");
   };

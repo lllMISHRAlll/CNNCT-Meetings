@@ -72,6 +72,7 @@ function MeetingBanner({
             placeholder="Enter URL Here"
             value={formData.link}
             onChange={handleChange}
+            required
           />
         </div>
         <div className={styles.formInput}>
@@ -84,6 +85,7 @@ function MeetingBanner({
             placeholder="Add member Emails"
             value={formData.emails}
             onChange={handleChange}
+            required
           />
         </div>
         <div className={styles.buttonContainer}>

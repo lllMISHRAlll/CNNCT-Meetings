@@ -125,6 +125,18 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
     }));
   };
 
+  const copyTimeSlot = (day, index) => {
+    setHours((prev) => {
+      const newTimeSlot = prev[day]?.[index];
+      if (!newTimeSlot) return prev; 
+  
+      return {
+        ...prev,
+        [day]: [...prev[day], { ...newTimeSlot }], 
+      };
+    });
+  };
+
   return (
     <div className={styles.inputHours}>
       <div className={styles.selectContainer}>
@@ -242,6 +254,12 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
                       onClick={() => removeTimeSlot(day, index)}
                     >
                       ×
+                    </button>
+                    <button
+                      className={styles.delete}
+                      onClick={() => copyTimeSlot(day, index)}
+                    >
+                      c
                     </button>
                   </div>
                 ))}
