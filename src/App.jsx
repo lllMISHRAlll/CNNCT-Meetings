@@ -25,14 +25,12 @@ function App() {
   const RestrictedSignup = withAuth(SignUp, false);
 
   return (
-    <Router>
+    <Router basename="/">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
           path="/signup"
-          element={
-            <RestrictedSignup formData={formData} setFormData={setFormData} />
-          }
+          element={<SignUp formData={formData} setFormData={setFormData} />}
         />
         <Route path="/login" element={<RestrictedLogin />} />
         <Route

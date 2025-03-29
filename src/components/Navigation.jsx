@@ -27,11 +27,11 @@ function Navigation({ activeTab, setActiveTab }) {
 
   return (
     <div className={styles.navigationMain}>
+      <div className={styles.logo} onClick={() => navigate("/")}>
+        <img src="assets/logos/cbi_plug-eu.png" alt="Logo" />
+        <p>CNNCT</p>
+      </div>
       <div className={styles.navigation}>
-        <div className={styles.logo} onClick={() => navigate("/")}>
-          <img src="assets/logos/cbi_plug-eu.png" alt="Logo" />
-          <p>CNNCT</p>
-        </div>
         {tabs.map((tab) => (
           <div
             key={tab.name}
