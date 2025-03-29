@@ -39,7 +39,7 @@ function Booking({ meetings: initialMeetings, hostId, setMeetings }) {
     const currentTime = new Date();
     const filtered = { upcoming: [], pending: [], canceled: [], past: [] };
 
-    initialMeetings.forEach((event) => {
+    initialMeetings?.forEach((event) => {
       try {
         const [month, day, year] = event.date.split("/");
         const [hours, minutes] = event.time.split(":");

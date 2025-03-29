@@ -124,6 +124,7 @@ function Dashboard({ host }) {
             fetchUserInfo={fetchUserInfo}
             availability={availability}
             setAvailability={setAvailability}
+            meetings={meetings}
           />
         );
       default:

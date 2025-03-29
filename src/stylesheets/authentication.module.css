@@ -32,7 +32,8 @@
 /***       SIGN UP SECTION         ***/
 
 .signupContainer {
-  width: 400px;
+  width: 100%;
+
   margin: auto;
   font-family: "Poppins";
 }
@@ -156,4 +157,27 @@ input:focus {
 .loginToSignUp a {
   color: #1877f2;
   cursor: pointer;
+}
+
+/***** Responsive *****/
+
+@media only screen and (max-width: 450px) {
+  .right {
+    display: none;
+  }
+
+  .left {
+    width: 100%;
+  }
+
+  .formUpper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .signupContainer > div {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
 }

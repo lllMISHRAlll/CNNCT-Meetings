@@ -5,8 +5,37 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendar, faList } from "@fortawesome/free-solid-svg-icons";
 import CustomCalendar from "./Calender";
 
-const Availability = ({ availability, setAvailability, fetchUserInfo }) => {
+const Availability = ({
+  availability,
+  setAvailability,
+  fetchUserInfo,
+  meetings,
+}) => {
   const [activeView, setActiveView] = useState("Availability");
+  const sampleDate = new Date(2025, 2, 30, 10, 0);
+  console.log("sampleDate :", sampleDate);
+  console.log("Meetings :", meetings);
+  const formattedEvents = meetings?.map((event) => {
+    const [day, month, year] = event.date.split("/").map(Number);
+    const [hours, minutes] = event.time.split(":").map(Number);
+
+    const eventHours =
+      event.period === "PM" && hours !== 12 ? hours + 12 : hours;
+    const eventMonth = month - 1;
+
+    const start = new Date(year, eventMonth, day, eventHours, minutes);
+    const end = new Date(start.getTime() + event.duration * 60 * 60 * 1000);
+
+    return {
+      id: event._id,
+      title: event.topic,
+      start,
+      end,
+    };
+  });
+
+  const [view, setView] = React.useState("month");
+  const [date, setDate] = React.useState(new Date());
 
   return (
     <div className={styles.main}>
@@ -38,7 +67,13 @@ const Availability = ({ availability, setAvailability, fetchUserInfo }) => {
             setAvailability={setAvailability}
           />
         ) : (
-          <CustomCalendar />
+          <CustomCalendar
+            view={view}
+            setView={setView}
+            date={date}
+            setDate={setDate}
+            events={formattedEvents}
+          />
         )}
       </div>
     </div>

@@ -143,11 +143,11 @@ function Event({
         </button>
       </div>
 
-      {meetings.length === 0 ? (
+      {meetings?.length === 0 ? (
         <h2 className={styles.noMeetings}>No meetings are scheduled.</h2>
       ) : (
         <div className={styles.eventList}>
-          {meetings.map((event) => {
+          {meetings?.map((event) => {
             const hasConflict = conflict?.eventConflict.some(
               ({ e1 }) => e1 === event._id
             );

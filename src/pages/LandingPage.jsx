@@ -41,7 +41,7 @@ export default function LandingPage() {
           <p>
             CNNCT eliminates the back-and-forth of scheduling meetings so you
             can focus on what matters. Set your availability, share your link,
-            <br /> and let others book time with you instantly.
+            and let others book time with you instantly.
           </p>
         </div>
         <div className={style.lowerNeck}>

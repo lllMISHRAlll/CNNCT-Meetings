@@ -11,7 +11,7 @@ export default function MeetingsOnBooking({
   isPending,
   hostId,
   handleStatusChange,
-  btnEditable,
+  canceled,
 }) {
   const [toggleMembersModal, settoggleMembersModal] = useState(false);
   const currentStatus =
@@ -73,7 +73,9 @@ export default function MeetingsOnBooking({
         </div>
       )}
 
-      <div className={style.participantsAndStatus}>
+      <div
+        className={canceled ? style.rejectBtnBg : style.participantsAndStatus}
+      >
         {!isPending && <label>{currentStatus}</label>}
 
         <p onClick={() => settoggleMembersModal(!toggleMembersModal)}>

@@ -40,6 +40,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0rem 15rem;
+  margin-bottom: 3rem;
 }
 
 .neck h1 {
@@ -68,11 +70,11 @@
   font-family: "Inter";
   font-size: 2rem;
   font-weight: 500;
+  margin-top: 3rem;
 }
 .neck p {
   font-family: "Inter", sans-serif;
-  font-size: 0.9rem;
-  font-weight: 300;
+  font-size: 1.04rem;
   margin-top: 2rem;
   text-align: center;
 }
@@ -301,4 +303,214 @@ li {
 
 .socialMediaIcons img {
   height: 1.5rem;
+}
+
+/* Responsive Styles for iPhone 14 Pro Max (430x932) */
+@media only screen and (max-width: 450px) {
+  .main {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .header {
+    margin-top: 1rem;
+    height: 3rem;
+    padding: 0.5rem;
+    border-radius: 50px;
+    background-color: #d9d9d9;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo p {
+    font-size: 1.2rem;
+  }
+
+  .signUpButton1 {
+    padding: 0 0.8rem;
+    height: 1.6rem;
+    font-size: 0.8rem;
+  }
+
+  .neck {
+    padding: 0;
+  }
+
+  .neck h1 {
+    font-size: 2rem;
+    margin-top: 1rem;
+    padding: 0 1rem;
+    line-height: 1.2;
+  }
+
+  .neck h3 {
+    font-size: 1.3rem;
+    padding: 0 1rem;
+    text-align: center;
+  }
+
+  .neck p {
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    padding: 0 1rem;
+  }
+
+  .signUpButton2 {
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .neck img {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    object-fit: contain;
+  }
+
+  .lowerNeck {
+    flex-direction: column-reverse;
+    padding: 0 1rem;
+    margin-top: 1rem;
+    gap: 2rem;
+  }
+
+  .leftContent {
+    padding: 0 0.5rem;
+    margin-top: 3rem;
+  }
+
+  .leftContent ul li {
+    font-size: 0.7rem;
+  }
+
+  .leftContent h4 {
+    font-size: 1.2rem;
+  }
+
+  .leftContent p {
+    margin: 0.8rem 0;
+    font-size: 0.9rem;
+  }
+
+  .leftContent li {
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .leftContent h1 {
+    margin-top: 3rem;
+    font-size: 2.5rem;
+    padding: 0 0.5rem;
+    text-align: center;
+  }
+
+  .readCustomer {
+    margin-left: 27%;
+    margin-top: 1rem;
+  }
+
+  .screen2 {
+    position: absolute;
+    right: 12rem;
+    height: 22rem;
+  }
+  .screen3 {
+    position: relative;
+    left: 7rem;
+    height: 20rem;
+  }
+
+  .lorem {
+    display: none;
+  }
+
+  .grid {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    gap: 1rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  .grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .grid > * {
+    flex: 0 0 auto;
+    width: 90%;
+    scroll-snap-align: start;
+    white-space: normal;
+  }
+
+  .container h1 {
+    font-size: 2rem;
+    padding: 0 1rem;
+    margin-top: 3rem;
+  }
+
+  .grid2 {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 0.8rem;
+  }
+
+  .integrationCard {
+    padding: 0.8rem;
+  }
+
+  .footer {
+    padding: 1.5rem;
+    margin: 2rem 1rem;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .authButtons {
+    display: flex;
+  }
+
+  .links {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+
+  .footerBodyWrapper {
+    flex-direction: column-reverse;
+  }
+
+  .footerLowerWrapper {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .login {
+    display: none;
+  }
+
+  .footerLowerWrapper p {
+    display: none;
+  }
+
+  .socialMediaIcons {
+    gap: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+  }
 }

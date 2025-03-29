@@ -132,3 +132,40 @@ h5 {
   font-size: 2.5rem;
   font-weight: 600;
 }
+
+/*******   Responsive ********/
+
+@media only screen and (max-width: 450px) {
+  .main {
+    width: 100%;
+  }
+
+  .inputField {
+    width: 100%;
+  }
+
+  .right {
+    display: none;
+  }
+
+  .left {
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 2rem;
+  }
+
+  .option {
+    width: 100%;
+  }
+
+  .formUpper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .signupContainer > div {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+}

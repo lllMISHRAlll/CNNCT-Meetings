@@ -6,6 +6,7 @@ import LogIn from "./components/LogIn";
 import Preferences from "./components/preference";
 import DashBoard from "./pages/DashBoard";
 import { useState } from "react";
+import withAuth from "./hoc/withAuth";
 
 function App() {
   const [formData, setFormData] = useState({
@@ -19,22 +20,28 @@ function App() {
     preference: "",
   });
 
+  const ProtectedDashBoard = withAuth(DashBoard);
+  const RestrictedLogin = withAuth(LogIn, false);
+  const RestrictedSignup = withAuth(SignUp, false);
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route
           path="/signup"
-          element={<SignUp formData={formData} setFormData={setFormData} />}
+          element={
+            <RestrictedSignup formData={formData} setFormData={setFormData} />
+          }
         />
-        <Route path="/login" element={<LogIn />} />
+        <Route path="/login" element={<RestrictedLogin />} />
         <Route
           path="/preference"
           element={
             <Preferences formData={formData} setFormData={setFormData} />
           }
         />
-        <Route path="/dashboard" element={<DashBoard />} />
+        <Route path="/dashboard" element={<ProtectedDashBoard />} />
       </Routes>
     </Router>
   );

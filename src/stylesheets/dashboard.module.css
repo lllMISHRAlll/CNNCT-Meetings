@@ -15,6 +15,22 @@
 
 .logoutBtn {
   height: 2.5rem;
+  border: none;
+  box-shadow: 3px 6px 2px 2px rgba(0, 0, 0, 0.1);
+  transition: 0.2s;
+  padding: 0.2rem 1rem;
+  margin: 0rem auto;
+  border-radius: 20px;
+  background-color: transparent;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.logoutBtnent {
+  height: 2.5rem;
   padding: 0.2rem 1rem;
   margin: 0rem auto;
   border: 2px solid black;
@@ -27,7 +43,7 @@
   font-weight: 600;
 }
 
-.logoutBtn img {
+.logoutBtnent img {
   object-fit: contain;
   height: 100%;
 }
@@ -372,6 +388,21 @@
   cursor: pointer;
 }
 
+.rejectBtnBg {
+  display: flex;
+  gap: 5rem;
+  align-items: center;
+}
+
+.rejectBtnBg label {
+  background-color: #616161;
+  color: white;
+  height: 2rem;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #676767;
+}
+
 .activeCreate {
   background-color: #007bff;
   color: #ffffff;
@@ -436,6 +467,11 @@
 .noMeetings {
   font-weight: 600;
   font-size: 2rem;
+}
+
+.logoutBtnWrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 /***************** Toggle Switch *********************/

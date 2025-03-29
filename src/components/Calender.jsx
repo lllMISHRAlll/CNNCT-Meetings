@@ -38,7 +38,6 @@ export default function CustomCalendar({
         step={30}
         showMultiDayTimes
         popup
-        formats={formats}
       />
     </div>
   );

@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLink,
   faCalendarDay,
   faClock,
   faGear,
+  faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "../stylesheets/dashboard.module.css";
 import { useNavigate } from "react-router-dom";
 
 function Navigation({ activeTab, setActiveTab }) {
   const navigate = useNavigate();
+  const [logoutBtnPop, setLogoutBtnPop] = useState(false);
   const tabs = [
     { name: "Events", icon: faLink },
     { name: "Booking", icon: faCalendarDay },
@@ -52,10 +54,27 @@ function Navigation({ activeTab, setActiveTab }) {
           <b>+</b> Create
         </button>
       </div>
-      <button className={styles.logoutBtn} type="submit" onClick={handleLogOut}>
-        <img src="assets/Rectangle 5526.png" />
-        {localStorage.getItem("username")}
-      </button>
+      <div className={styles.logoutBtnWrapper}>
+        {logoutBtnPop && (
+          <button
+            type="submit"
+            className={styles.logoutBtn}
+            onClick={handleLogOut}
+          >
+            <FontAwesomeIcon icon={faArrowRightFromBracket} rotation={180} />
+            Sign Out
+          </button>
+        )}
+
+        <button
+          className={styles.logoutBtnent}
+          type="submit"
+          onClick={() => setLogoutBtnPop(!logoutBtnPop)}
+        >
+          <img src="assets/Rectangle 5526.png" />
+          {localStorage.getItem("username")}
+        </button>
+      </div>
     </div>
   );
 }

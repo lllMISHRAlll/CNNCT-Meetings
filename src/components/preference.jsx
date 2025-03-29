@@ -58,8 +58,7 @@ export default function Preferences({ formData, setFormData }) {
         userName: "",
         preference: "",
       });
-      toast.success(response.data.message || "Account created successfully!");
-      toast.info("Please Login to Continue");
+      toast.success(response.data.message || "User registered successfully!");
       navigate("/login");
     } catch (error) {
       console.error("Registration Error Details:", {

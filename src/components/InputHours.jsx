@@ -10,46 +10,30 @@ const AM_PM_OPTIONS = ["AM", "PM"];
 const convertTo24Hour = (time, period) => {
   if (!time) return "00:00";
 
-  const cleanedTime = time.trim().replace(/\s/g, "");
-  let [hour, minute] = cleanedTime
-    .split(":")
-    .map((num) => parseInt(num, 10) || 0);
+  const [hourStr, minuteStr] = time.split(":");
+  const hour = parseInt(hourStr, 10) || 0;
+  const minute = parseInt(minuteStr, 10) || 0;
 
-  minute = Math.min(59, Math.max(0, minute));
-  hour = Math.min(23, Math.max(0, hour));
+  let finalHour = hour;
+  if (period === "PM" && hour < 12) finalHour += 12;
+  if (period === "AM" && hour === 12) finalHour = 0;
 
-  if (period === "PM" && hour < 12) {
-    hour += 12;
-  }
-  if (period === "AM" && hour === 12) {
-    hour = 0;
-  }
-
-  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+  return `${String(finalHour).padStart(2, "0")}:${String(minute).padStart(
+    2,
+    "0"
+  )}`;
 };
 
-const convertTo12Hour = (time) => {
-  if (!time) return { time: "12:00", period: "AM" };
+const parseTimeSlot = (timeStr) => {
+  if (!timeStr) return { time: "12:00", period: "AM" };
 
-  const cleanedTime = time.trim().replace(/\s/g, "");
-  let [hour, minute] = cleanedTime
-    .split(":")
-    .map((num) => parseInt(num, 10) || 0);
+  const parts = timeStr.split(" ");
+  const timePart = parts[0] || "12:00";
+  const period = parts[1] || "AM";
 
-  minute = Math.min(59, Math.max(0, minute));
-  hour = Math.min(23, Math.max(0, hour));
-
-  let period = "AM";
-
-  if (hour >= 12) {
-    period = "PM";
-    if (hour > 12) {
-      hour -= 12;
-    }
-  }
-  if (hour === 0) {
-    hour = 12;
-  }
+  let [hourStr, minuteStr] = timePart.split(":");
+  const hour = parseInt(hourStr, 10) || 0;
+  const minute = parseInt(minuteStr, 10) || 0;
 
   return {
     time: `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`,
@@ -64,18 +48,17 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
   );
 
   useEffect(() => {
+    const defaultSlot = {
+      from: { time: "12:00", period: "AM" },
+      to: { time: "11:59", period: "PM" },
+    };
+
     const updatedHours = {};
     WEEKDAYS.forEach((day) => {
-      updatedHours[day] = availability?.[day]?.map((slot) => {
-        let from = convertTo12Hour(slot.from || "00:00");
-        let to = convertTo12Hour(slot.to || "23:59");
-        return { from, to };
-      }) || [
-        {
-          from: convertTo12Hour("00:00"),
-          to: convertTo12Hour("23:59"),
-        },
-      ];
+      updatedHours[day] = availability?.[day]?.map((slot) => ({
+        from: parseTimeSlot(slot.from),
+        to: parseTimeSlot(slot.to),
+      })) || [defaultSlot];
     });
     setHours(updatedHours);
   }, [availability]);
@@ -106,7 +89,40 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
       fetchUserInfo();
     } catch (err) {
       console.error("Error saving availability:", err);
+      toast.error(
+        err.response?.data?.message || "Failed to update availability"
+      );
     }
+  };
+
+  const handleTimeChange = (day, index, field, value) => {
+    setHours((prev) => ({
+      ...prev,
+      [day]: prev[day].map((slot, i) =>
+        i === index ? { ...slot, [field]: value } : slot
+      ),
+    }));
+  };
+
+  const addTimeSlot = (day) => {
+    setHours((prev) => ({
+      ...prev,
+      [day]: [
+        ...(prev[day] || []),
+        {
+          from: { time: "09:00", period: "AM" },
+          to: { time: "05:00", period: "PM" },
+        },
+      ],
+    }));
+  };
+
+  const removeTimeSlot = (day, index) => {
+    if (hours[day].length <= 1) return;
+    setHours((prev) => ({
+      ...prev,
+      [day]: prev[day].filter((_, i) => i !== index),
+    }));
   };
 
   return (
@@ -160,35 +176,22 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
                         type="text"
                         value={slot.from.time}
                         onChange={(e) =>
-                          setHours((prev) => ({
-                            ...prev,
-                            [day]: prev[day].map((s, i) =>
-                              i === index
-                                ? {
-                                    ...s,
-                                    from: { ...s.from, time: e.target.value },
-                                  }
-                                : s
-                            ),
-                          }))
+                          handleTimeChange(day, index, "from", {
+                            ...slot.from,
+                            time: e.target.value,
+                          })
                         }
                         placeholder="HH:MM"
                         disabled={!activeDays[day]}
+                        maxLength={5}
                       />
                       <select
                         value={slot.from.period}
                         onChange={(e) =>
-                          setHours((prev) => ({
-                            ...prev,
-                            [day]: prev[day].map((s, i) =>
-                              i === index
-                                ? {
-                                    ...s,
-                                    from: { ...s.from, period: e.target.value },
-                                  }
-                                : s
-                            ),
-                          }))
+                          handleTimeChange(day, index, "from", {
+                            ...slot.from,
+                            period: e.target.value,
+                          })
                         }
                         disabled={!activeDays[day]}
                       >
@@ -207,35 +210,22 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
                         type="text"
                         value={slot.to.time}
                         onChange={(e) =>
-                          setHours((prev) => ({
-                            ...prev,
-                            [day]: prev[day].map((s, i) =>
-                              i === index
-                                ? {
-                                    ...s,
-                                    to: { ...s.to, time: e.target.value },
-                                  }
-                                : s
-                            ),
-                          }))
+                          handleTimeChange(day, index, "to", {
+                            ...slot.to,
+                            time: e.target.value,
+                          })
                         }
                         placeholder="HH:MM"
                         disabled={!activeDays[day]}
+                        maxLength={5}
                       />
                       <select
                         value={slot.to.period}
                         onChange={(e) =>
-                          setHours((prev) => ({
-                            ...prev,
-                            [day]: prev[day].map((s, i) =>
-                              i === index
-                                ? {
-                                    ...s,
-                                    to: { ...s.to, period: e.target.value },
-                                  }
-                                : s
-                            ),
-                          }))
+                          handleTimeChange(day, index, "to", {
+                            ...slot.to,
+                            period: e.target.value,
+                          })
                         }
                         disabled={!activeDays[day]}
                       >
@@ -249,12 +239,7 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
 
                     <button
                       className={styles.delete}
-                      onClick={() =>
-                        setHours((prev) => ({
-                          ...prev,
-                          [day]: prev[day].filter((_, i) => i !== index),
-                        }))
-                      }
+                      onClick={() => removeTimeSlot(day, index)}
                     >
                       ×
                     </button>
@@ -262,21 +247,7 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
                 ))}
               </div>
 
-              <button
-                className={styles.add}
-                onClick={() =>
-                  setHours((prev) => ({
-                    ...prev,
-                    [day]: [
-                      ...(prev[day] || []),
-                      {
-                        from: convertTo12Hour("00:00"),
-                        to: convertTo12Hour("23:59"),
-                      },
-                    ],
-                  }))
-                }
-              >
+              <button className={styles.add} onClick={() => addTimeSlot(day)}>
                 +
               </button>
             </div>

@@ -7,7 +7,12 @@ export default function Canceled({ meetings, hostId }) {
     <div className={styles.bookingContent}>
       {meetings.length > 0 ? (
         meetings.map((event) => (
-          <MeetingsOnBooking key={event._id} event={event} hostId={hostId} />
+          <MeetingsOnBooking
+            key={event._id}
+            event={event}
+            hostId={hostId}
+            canceled={true}
+          />
         ))
       ) : (
         <h1 className={styles.noMeetings}>No Canceled Meetings</h1>

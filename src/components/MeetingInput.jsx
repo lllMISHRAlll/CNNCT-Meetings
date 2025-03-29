@@ -74,119 +74,121 @@ function MeetingInput({
 
   return (
     <div className={styles.formContainer}>
-      <form onSubmit={handleFormSubmit}>
-        <div className={styles.inputGroup}>
-          <label>Event Topic</label>
-          <input
-            type="text"
-            name="topic"
-            value={formData.topic}
-            onChange={handleChange}
-            style={{ borderColor: errors.topic ? "#ED0000" : "" }}
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className={styles.inputGroup}>
-          <label>Host Name</label>
-          <input
-            type="text"
-            name="host"
-            value={localStorage.getItem("username")}
-            onChange={handleChange}
-            style={{ borderColor: errors.host ? "red" : "" }}
-          />
-        </div>
-
-        <div className={styles.inputGroupDescription}>
-          <label>Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            rows="2"
-            cols="6"
-          ></textarea>
-        </div>
-
-        <div className={styles.inputGroupDateTime}>
-          <label>Date and Time</label>
-          <div className={styles.dateTimeContainer}>
+      {formData && (
+        <form onSubmit={handleFormSubmit}>
+          <div className={styles.inputGroup}>
+            <label>Event Topic</label>
             <input
-              className={styles.dateInput}
               type="text"
-              name="date"
-              placeholder="DD/MM/YYYY"
-              value={formData.date}
-              onChange={handleDateChange}
-              maxLength="10"
-              style={{ borderColor: errors.date ? "red" : "" }}
-            />
-            <input
-              className={styles.hrInput}
-              type="text"
-              name="time"
-              placeholder="HH:MM"
-              value={formData.time}
-              onChange={handleTimeChange}
-              maxLength="5"
-              style={{ borderColor: errors.time ? "red" : "" }}
-            />
-            <select
-              className={styles.ampmSelect}
-              name="period"
-              value={formData.period}
+              name="topic"
+              value={formData?.topic}
               onChange={handleChange}
-            >
-              <option value="AM">AM</option>
-              <option value="PM">PM</option>
-            </select>
-            <select
-              className={styles.timezoneInput}
-              name="timezone"
-              value={formData.timezone}
-              onChange={handleChange}
-              style={{ borderColor: errors.timezone ? "red" : "" }}
-            >
-              <option value="">Select Timezone</option>
-              {timezones.map((tz) => (
-                <option key={tz} value={tz}>
-                  {tz}
-                </option>
-              ))}
-            </select>
+              style={{ borderColor: errors.topic ? "#ED0000" : "" }}
+            />
           </div>
-        </div>
 
-        <div className={styles.inputGroupSetDuration}>
-          <label>Set Duration</label>
-          <input
-            type="number"
-            name="duration"
-            value={formData.duration}
-            onChange={handleChange}
-            placeholder="in hr"
-          />
-        </div>
+          <div className={styles.inputGroup}>
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className={styles.buttonContainer}>
-          <button type="button" onClick={() => setActiveTab("Events")}>
-            Cancel
-          </button>
-          <button type="submit" className={styles.submitBtn}>
-            Save
-          </button>
-        </div>
-      </form>
+          <div className={styles.inputGroup}>
+            <label>Host Name</label>
+            <input
+              type="text"
+              name="host"
+              value={localStorage.getItem("username")}
+              onChange={handleChange}
+              style={{ borderColor: errors.host ? "red" : "" }}
+            />
+          </div>
+
+          <div className={styles.inputGroupDescription}>
+            <label>Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              rows="2"
+              cols="6"
+            ></textarea>
+          </div>
+
+          <div className={styles.inputGroupDateTime}>
+            <label>Date and Time</label>
+            <div className={styles.dateTimeContainer}>
+              <input
+                className={styles.dateInput}
+                type="text"
+                name="date"
+                placeholder="DD/MM/YYYY"
+                value={formData.date}
+                onChange={handleDateChange}
+                maxLength="10"
+                style={{ borderColor: errors.date ? "red" : "" }}
+              />
+              <input
+                className={styles.hrInput}
+                type="text"
+                name="time"
+                placeholder="HH:MM"
+                value={formData.time}
+                onChange={handleTimeChange}
+                maxLength="5"
+                style={{ borderColor: errors.time ? "red" : "" }}
+              />
+              <select
+                className={styles.ampmSelect}
+                name="period"
+                value={formData.period}
+                onChange={handleChange}
+              >
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
+              <select
+                className={styles.timezoneInput}
+                name="timezone"
+                value={formData.timezone}
+                onChange={handleChange}
+                style={{ borderColor: errors.timezone ? "red" : "" }}
+              >
+                <option value="">Select Timezone</option>
+                {timezones.map((tz) => (
+                  <option key={tz} value={tz}>
+                    {tz}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className={styles.inputGroupSetDuration}>
+            <label>Set Duration</label>
+            <input
+              type="number"
+              name="duration"
+              value={formData.duration}
+              onChange={handleChange}
+              placeholder="in hr"
+            />
+          </div>
+
+          <div className={styles.buttonContainer}>
+            <button type="button" onClick={() => setActiveTab("Events")}>
+              Cancel
+            </button>
+            <button type="submit" className={styles.submitBtn}>
+              Save
+            </button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
