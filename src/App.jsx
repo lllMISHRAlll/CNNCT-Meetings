@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
-import Preferences from "./components/Preference";
+import Preference from "./components/Preference";
 import DashBoard from "./pages/DashBoard";
 import { useState } from "react";
 import withAuth from "./hoc/withAuth";
@@ -22,7 +22,6 @@ function App() {
 
   const ProtectedDashBoard = withAuth(DashBoard);
   const RestrictedLogin = withAuth(LogIn, false);
-  const RestrictedSignup = withAuth(SignUp, false);
 
   return (
     <Router basename="/">
@@ -35,9 +34,7 @@ function App() {
         <Route path="/login" element={<RestrictedLogin />} />
         <Route
           path="/preference"
-          element={
-            <Preferences formData={formData} setFormData={setFormData} />
-          }
+          element={<Preference formData={formData} setFormData={setFormData} />}
         />
         <Route path="/dashboard" element={<ProtectedDashBoard />} />
       </Routes>
