@@ -26,6 +26,7 @@ function Dashboard({ host }) {
   const [hostId, setHostId] = useState();
   const [activeTab, setActiveTab] = useState("");
   const [availability, setAvailability] = useState(null);
+  const [logoutBtnPop, setLogoutBtnPop] = useState(false);
   const tabs = [
     { name: "Events", icon: faLink },
     { name: "Booking", icon: faCalendarDay },
@@ -103,6 +104,11 @@ function Dashboard({ host }) {
     setMeetings((prev) => [...prev, { ...newMeeting, isActive: true }]);
   };
 
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case "Booking":
@@ -156,8 +162,40 @@ function Dashboard({ host }) {
 
   return (
     <div className={styles.container}>
+      <div className={styles.mobileHead}>
+        <div className={styles.logo} onClick={() => navigate("/")}>
+          <img src="assets/logos/cbi_plug-eu.png" alt="Logo" />
+          <p>CNNCT</p>
+        </div>
+        <div className={styles.logoutBtnWrapper}>
+          {logoutBtnPop && (
+            <button
+              type="submit"
+              className={styles.logoutBtn}
+              onClick={handleLogOut}
+            >
+              <FontAwesomeIcon icon={faArrowRightFromBracket} rotation={180} />
+              Sign Out
+            </button>
+          )}
+
+          <button
+            className={styles.logoutBtnent}
+            type="submit"
+            onClick={() => setLogoutBtnPop(!logoutBtnPop)}
+          >
+            <img src="assets/Rectangle 5526.png" />
+          </button>
+        </div>
+      </div>
       <div className={styles.left}>
-        <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+        <Navigation
+          logoutBtnPop={logoutBtnPop}
+          setLogoutBtnPop={setLogoutBtnPop}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          handleLogOut={handleLogOut}
+        />
       </div>
       <div className={styles.content}>{renderContent()}</div>
       <div className={styles.mobileNav}>

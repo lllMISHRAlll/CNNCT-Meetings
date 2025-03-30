@@ -10,20 +10,20 @@ import {
 import styles from "../stylesheets/dashboard.module.css";
 import { useNavigate } from "react-router-dom";
 
-function Navigation({ activeTab, setActiveTab }) {
+function Navigation({
+  activeTab,
+  setActiveTab,
+  setLogoutBtnPop,
+  logoutBtnPop,
+  handleLogOut,
+}) {
   const navigate = useNavigate();
-  const [logoutBtnPop, setLogoutBtnPop] = useState(false);
   const tabs = [
     { name: "Events", icon: faLink },
     { name: "Booking", icon: faCalendarDay },
     { name: "Availability", icon: faClock },
     { name: "Settings", icon: faGear },
   ];
-
-  const handleLogOut = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
 
   return (
     <div className={styles.navigationMain}>

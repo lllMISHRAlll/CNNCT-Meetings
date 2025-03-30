@@ -475,6 +475,10 @@
   margin-top: 80%;
 }
 
+.mobileHead {
+  display: none;
+}
+
 /***************** Toggle Switch *********************/
 .switch {
   position: relative;
@@ -534,7 +538,6 @@
 
   .content {
     height: 92dvh;
-    padding: 4rem 1rem 1rem 1rem;
     overflow-y: auto;
   }
 
@@ -592,7 +595,7 @@
   }
 
   .participantsAndStatus {
-    gap: 0;
+    gap: 0.5rem;
     flex-direction: row-reverse;
   }
 
@@ -653,5 +656,30 @@
   }
   .statusBtn button {
     width: 2.5rem;
+  }
+
+  .mobileHead {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f3f3f1;
+    align-items: center;
+    padding: 1rem 2rem;
+  }
+
+  .logo {
+    margin: 0;
+  }
+
+  .logoutBtnWrapper {
+    margin: 0;
+  }
+
+  .logoutBtnent {
+    padding: 0;
+  }
+
+  .logoutBtn {
+    position: absolute;
+    right: 4rem;
   }
 }
