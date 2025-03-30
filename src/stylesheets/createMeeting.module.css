@@ -128,7 +128,7 @@
 .inputGroupSetDuration {
   display: flex;
   width: 50dvw;
-  justify-content: space-between;
+  gap: 14rem;
   align-items: center;
 }
 .inputGroupSetDuration input {
@@ -311,4 +311,37 @@
   border-radius: 10px;
   border: 1px solid #999999;
   padding: 0.5rem;
+}
+
+@media only screen and (max-width: 450px) {
+  .createMeetingContainer {
+    height: 70dvh;
+    margin: 0;
+    width: auto;
+    overflow-y: auto;
+    border: 1px solid black;
+    padding: 1rem;
+  }
+
+  .formContainer form {
+    align-items: baseline;
+  }
+  .formContainer form textarea {
+    width: 40dvh;
+  }
+  .formContainer form div {
+    display: block;
+  }
+  .formContainer form div input {
+    width: auto;
+  }
+
+  .dateTimeContainer {
+    display: flex !important;
+    flex-wrap: wrap;
+  }
+
+  .formInput {
+    padding: 0;
+  }
 }

@@ -68,8 +68,8 @@ function Event({
   const editMeeting = (event) => {
     const currentEvent = {
       ...event,
-      emails: event.participants?.map((p) => p.email).join(','),
-    }
+      emails: event.participants?.map((p) => p.email).join(","),
+    };
     setFormData(currentEvent);
     setEditable(true);
     setActiveTab("CreateMeeting");
@@ -129,6 +129,15 @@ function Event({
   };
 
   const dcToken = decodeToken();
+
+  function formatDate(dateStr) {
+    const [day, month, year] = dateStr.split("/").map(Number);
+    const date = new Date(year, month - 1, day);
+
+    const options = { weekday: "long", day: "2-digit", month: "short" };
+    const formattedDate = date.toLocaleDateString("en-GB", options);
+    return formattedDate.replace(/ (\d+)/, ", $1");
+  }
 
   return (
     <div className={styles.eventContainer}>
@@ -197,7 +206,7 @@ function Event({
                 </div>
 
                 <div className={styles.eventdatesANdInfo}>
-                  <div>{event.date}</div>
+                  <div>{formatDate(event.date)}</div>
                   <span>
                     {event.time} {event.period}
                   </span>

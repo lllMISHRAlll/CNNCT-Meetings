@@ -37,15 +37,24 @@ export default function MeetingsOnBooking({
     }
   };
 
+  function formatDate(dateStr) {
+    const [day, month, year] = dateStr.split("/").map(Number);
+    const date = new Date(year, month - 1, day);
+
+    const options = { weekday: "long", day: "2-digit", month: "short" };
+    const formattedDate = date.toLocaleDateString("en-GB", options);
+    return formattedDate.replace(/ (\d+)/, ", $1");
+  }
+
   return (
     <div className={style.meeting}>
       <div className={style.meetingInner}>
         <div className={style.meetingDate}>
-          <p>{event.date}</p>
+          <p>{formatDate(event.date)}</p>
           <span>{event.time}</span>
         </div>
         <div className={style.meetingTopic}>
-          <h3>{event.topic}</h3>
+          <h4>{event.topic}</h4>
           <p className={style.teamCount}>
             You and {event.participants.length - 1}
           </p>
@@ -60,7 +69,7 @@ export default function MeetingsOnBooking({
             onClick={() => updateStatus("rejected")}
           >
             <FontAwesomeIcon icon={faBan} />
-            Reject
+            <span>Reject</span>
           </button>
           <button
             type="submit"
@@ -68,7 +77,7 @@ export default function MeetingsOnBooking({
             onClick={() => updateStatus("accepted")}
           >
             <FontAwesomeIcon icon={faCheck} />
-            Accept
+            <span>Accept</span>
           </button>
         </div>
       )}
@@ -80,7 +89,7 @@ export default function MeetingsOnBooking({
 
         <p onClick={() => settoggleMembersModal(!toggleMembersModal)}>
           <FontAwesomeIcon icon={faUserGroup} /> &nbsp;
-          {event.participants.length} people
+          {event.participants.length} <span>people</span>
         </p>
 
         {toggleMembersModal && (

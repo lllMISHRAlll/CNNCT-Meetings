@@ -62,7 +62,7 @@ function CreateMeeting({
         createdBy: userId,
         participants: [
           { email: userEmail, status: "accepted", userId },
-          ...(formData.emails
+          ...(formData.emails && typeof formData.emails === "string"
             ? formData.emails.split(",").map((email) => ({
                 email: email.trim(),
                 status: "pending",

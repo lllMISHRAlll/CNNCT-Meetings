@@ -80,27 +80,3 @@ export const socialMediaIcons = [
   { src: "assets/logos/TickTok.png", alt: "Ticktok" },
   { src: "assets/logos/CNNCT BW.png", alt: "CNNCT BW" },
 ];
-
-export const events = [
-  {
-    id: 1,
-    topic: "Meeting",
-    date: "Friday, 28 kob",
-    time: "10:00 AM - 12:00 AM",
-    duration: "2 hours Group Meeting",
-  },
-  {
-    id: 2,
-    topic: "Meeting",
-    date: "Friday, 28 kob",
-    time: "11:00 AM - 1:00 PM",
-    duration: "2 hours Group Meeting",
-  },
-  {
-    id: 3,
-    topic: "Appointment",
-    date: "Friday, 28 kob",
-    time: "2:35 PM - 3:00 PM",
-    duration: "25 minutes Group Meeting",
-  },
-];

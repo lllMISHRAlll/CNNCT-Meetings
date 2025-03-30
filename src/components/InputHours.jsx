@@ -3,6 +3,8 @@ import axios from "axios";
 import styles from "../stylesheets/availability.module.css";
 import { getBaseURI } from "../utils/config";
 import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClone } from "@fortawesome/free-solid-svg-icons";
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const AM_PM_OPTIONS = ["AM", "PM"];
@@ -128,11 +130,11 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
   const copyTimeSlot = (day, index) => {
     setHours((prev) => {
       const newTimeSlot = prev[day]?.[index];
-      if (!newTimeSlot) return prev; 
-  
+      if (!newTimeSlot) return prev;
+
       return {
         ...prev,
-        [day]: [...prev[day], { ...newTimeSlot }], 
+        [day]: [...prev[day], { ...newTimeSlot }],
       };
     });
   };
@@ -256,10 +258,10 @@ const InputHours = ({ availability, setAvailability, fetchUserInfo }) => {
                       ×
                     </button>
                     <button
-                      className={styles.delete}
+                      className={styles.copy}
                       onClick={() => copyTimeSlot(day, index)}
                     >
-                      c
+                      <FontAwesomeIcon icon={faClone} />
                     </button>
                   </div>
                 ))}

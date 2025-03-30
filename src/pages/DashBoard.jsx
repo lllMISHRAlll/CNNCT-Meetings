@@ -7,8 +7,16 @@ import styles from "../stylesheets/dashboard.module.css";
 import UserProfile from "../components/UserProfile";
 import Availability from "../components/Availability";
 import axios from "axios";
+import {
+  faLink,
+  faCalendarDay,
+  faClock,
+  faGear,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { getBaseURI } from "../utils/config";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Dashboard({ host }) {
   const [user, setUser] = useState();
@@ -18,6 +26,12 @@ function Dashboard({ host }) {
   const [hostId, setHostId] = useState();
   const [activeTab, setActiveTab] = useState("");
   const [availability, setAvailability] = useState(null);
+  const tabs = [
+    { name: "Events", icon: faLink },
+    { name: "Booking", icon: faCalendarDay },
+    { name: "Availability", icon: faClock },
+    { name: "Settings", icon: faGear },
+  ];
   const [formData, setFormData] = useState({
     topic: "",
     password: "",
@@ -146,6 +160,20 @@ function Dashboard({ host }) {
         <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
       </div>
       <div className={styles.content}>{renderContent()}</div>
+      <div className={styles.mobileNav}>
+        {tabs.map((tab) => (
+          <div
+            key={tab.name}
+            className={`${styles.navItem} ${
+              activeTab === tab.name ? styles.active : ""
+            }`}
+            onClick={() => setActiveTab(tab.name)}
+          >
+            <FontAwesomeIcon icon={tab.icon} />
+            <span>{tab.name}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

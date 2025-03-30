@@ -8,9 +8,7 @@
 .navigationMain {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
-  padding-bottom: 4rem;
 }
 
 .logoutBtn {
@@ -49,7 +47,7 @@
 }
 
 .left {
-  width: 22dvw;
+  width: 18dvw;
 }
 
 .navigation {
@@ -235,6 +233,10 @@
   cursor: pointer;
 }
 
+.logo img {
+  height: 2rem;
+}
+
 .logo p {
   font-family: "Plus Jakarta Sans";
   font-weight: 800;
@@ -315,21 +317,13 @@
   justify-content: space-between;
 }
 
-.meetingTopic {
-  justify-content: center;
-}
-
 .meetingInner {
   display: flex;
   justify-content: space-between;
   gap: 14rem;
 }
 
-.meetingDate {
-  width: 5rem;
-}
-
-.meetingInner h3 {
+.meetingInner h4 {
   font-weight: 400;
 }
 .meetingInner span {
@@ -478,6 +472,7 @@
 .logoutBtnWrapper {
   display: flex;
   flex-direction: column;
+  margin-top: 80%;
 }
 
 /***************** Toggle Switch *********************/
@@ -525,21 +520,22 @@
   transform: translateX(20px);
 }
 
+.mobileNav {
+  display: none;
+}
+
 /******* RESPONSIVE ***********/
 
 @media only screen and (max-width: 450px) {
   .container {
     height: auto;
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 
   .content {
-    height: 100dvh;
-  }
-
-  .left {
-    background-color: #d9d9d9;
-    /* display: none; */
+    height: 92dvh;
+    padding: 4rem 1rem 1rem 1rem;
+    overflow-y: auto;
   }
 
   .newEvent {
@@ -573,5 +569,89 @@
   .bookingContent {
     padding: 0rem;
     text-align: center;
+  }
+
+  .bookingSections {
+    height: auto;
+  }
+
+  .meeting {
+    padding: 1rem 1rem;
+  }
+
+  .meetingInner {
+    gap: 1rem;
+  }
+
+  .meetingInner div h4 {
+    font-size: 0.8rem;
+  }
+
+  .meetingInner p {
+    font-size: 0.8rem;
+  }
+
+  .participantsAndStatus {
+    gap: 0;
+    flex-direction: row-reverse;
+  }
+
+  .participantsAndStatus span {
+    display: none;
+  }
+
+  .participantsAndStatus label {
+    border: none;
+    font-size: 0.7rem;
+    padding: 0.5rem;
+    background-color: #00c35f;
+    color: white;
+  }
+
+  .left {
+    display: none;
+  }
+
+  .mobileNav {
+    position: sticky;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 8dvh;
+    width: 100%;
+  }
+
+  .navItem {
+    flex-direction: column;
+    padding: 0rem;
+    margin: 0;
+    justify-content: center;
+  }
+
+  .navItem span {
+    margin: 0;
+  }
+
+  .navItem:hover {
+    font-size: 0.9rem;
+  }
+
+  .active {
+    background-color: transparent;
+    color: #1877f2;
+    transition: 0s;
+  }
+
+  .statusBtn {
+    width: 0;
+    gap: 1rem;
+    flex-direction: column;
+  }
+
+  .statusBtn button span {
+    display: none;
+  }
+  .statusBtn button {
+    width: 2.5rem;
   }
 }

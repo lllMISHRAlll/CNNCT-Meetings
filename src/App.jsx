@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
-import Preferences from "./components/preference";
+import Preferences from "./components/Preference";
 import DashBoard from "./pages/DashBoard";
 import { useState } from "react";
 import withAuth from "./hoc/withAuth";

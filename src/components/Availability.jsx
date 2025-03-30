@@ -13,8 +13,6 @@ const Availability = ({
 }) => {
   const [activeView, setActiveView] = useState("Availability");
   const sampleDate = new Date(2025, 2, 30, 10, 0);
-  console.log("sampleDate :", sampleDate);
-  console.log("Meetings :", meetings);
   const formattedEvents = meetings?.map((event) => {
     const [day, month, year] = event.date.split("/").map(Number);
     const [hours, minutes] = event.time.split(":").map(Number);

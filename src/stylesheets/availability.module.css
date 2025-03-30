@@ -192,3 +192,18 @@
   color: white;
   border-radius: 10px;
 }
+
+@media only screen and (max-width: 450px) {
+  .inputHours {
+    width: 100%;
+    padding: 2rem 1rem;
+  }
+
+  .otherDaysContainer {
+    padding: 0;
+  }
+
+  .sundayContainer {
+    gap: 0;
+  }
+}
