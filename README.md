@@ -28,11 +28,9 @@ Technology Stack
 
 React.js
 
-Redux
-
 Axios
 
-Tailwind CSS
+Module CSS
 
 Deployment Link
 
