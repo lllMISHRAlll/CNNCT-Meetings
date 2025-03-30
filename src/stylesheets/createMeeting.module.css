@@ -315,8 +315,8 @@
 
 @media only screen and (max-width: 450px) {
   .createMeetingContainer {
-    height: 70dvh;
-    margin: 0;
+    height: 65dvh;
+    margin: 1rem 0 0 0;
     width: auto;
     overflow-y: auto;
     border: 1px solid black;
@@ -327,21 +327,37 @@
     align-items: baseline;
   }
   .formContainer form textarea {
-    width: 40dvh;
+    width: 34dvh;
   }
   .formContainer form div {
     display: block;
   }
-  .formContainer form div input {
-    width: auto;
+  .inputGroup input {
+    width: 75dvw;
   }
 
   .dateTimeContainer {
     display: flex !important;
+    gap: 1rem;
+    width: 75dvw;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
+  .timezoneInput {
+    width: 70dvw;
+  }
   .formInput {
     padding: 0;
+  }
+  .banner {
+    width: 70dvw;
+  }
+
+  .banner div {
+    display: flex;
+  }
+  .banner input {
+    font-size: 1rem;
   }
 }

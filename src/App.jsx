@@ -38,7 +38,7 @@ function App() {
             <Preferences formData={formData} setFormData={setFormData} />
           }
         />
-        <Route path="/dashboard" element={<ProtectedDashBoard />} />
+        <Route path="/dashboard" element={<ProtectedDashBoard />}></Route>
       </Routes>
     </Router>
   );

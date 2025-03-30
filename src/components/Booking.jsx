@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "../stylesheets/dashboard.module.css";
 import Upcoming from "./Upcoming";
 import Pending from "./Pending";
 import Canceled from "./Canceled";
 import Past from "./Past";
-import axios from "axios";
-import { getBaseURI } from "../utils/config";
 
 function Booking({ meetings: initialMeetings, hostId, setMeetings }) {
   const [activeTab, setActiveTab] = useState("Upcoming");
@@ -17,43 +15,32 @@ function Booking({ meetings: initialMeetings, hostId, setMeetings }) {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const fetchEvents = async () => {
-      try {
-        if (!token) return;
-        const res = await axios.get(`${getBaseURI()}/api/event/getevents`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setMeetings(res.data.events);
-      } catch (error) {
-        console.error(
-          "Error fetching events:",
-          error.response?.data || error.message
-        );
-      }
-    };
-    fetchEvents();
-  }, [activeTab, initialMeetings]);
-
-  useEffect(() => {
     const currentTime = new Date();
     const filtered = { upcoming: [], pending: [], canceled: [], past: [] };
 
     initialMeetings.forEach((event) => {
       try {
-        const [month, day, year] = event.date.split("/");
-        const [hours, minutes] = event.time.split(":");
+        const [day, month, year] = event.date.split("/");
+        let [hours, minutes] = event.time
+          .split(":")
+          .map((val) => val.padStart(2, "0"));
+
         let eventDateTime = new Date(
-          2000 + parseInt(year),
+          parseInt(year),
           parseInt(month) - 1,
           parseInt(day),
           parseInt(hours),
           parseInt(minutes)
         );
 
-        if (event.period === "PM" && hours < 12) {
+        if (event.period === "PM" && parseInt(hours) < 12) {
           eventDateTime.setHours(eventDateTime.getHours() + 12);
         }
+
+        console.log("Event:", event.topic);
+        console.log("Event DateTime:", eventDateTime);
+        console.log("Current Time:", currentTime);
+        console.log("Is Expired?", eventDateTime <= currentTime);
 
         const participant = event.participants.find((p) => p.userId === hostId);
         const isHost = event.createdBy === hostId;
@@ -104,7 +91,11 @@ function Booking({ meetings: initialMeetings, hostId, setMeetings }) {
 
         <div className={styles.bookingContentContainer}>
           {activeTab === "Pending" && (
-            <Pending meetings={filteredMeetings.pending} hostId={hostId} />
+            <Pending
+              meetings={filteredMeetings.pending}
+              hostId={hostId}
+              setMeetings={setMeetings}
+            />
           )}
           {activeTab === "Canceled" && (
             <Canceled meetings={filteredMeetings.canceled} hostId={hostId} />

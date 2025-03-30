@@ -131,6 +131,8 @@ function Event({
   const dcToken = decodeToken();
 
   function formatDate(dateStr) {
+    if (!dateStr) return;
+
     const [day, month, year] = dateStr.split("/").map(Number);
     const date = new Date(year, month - 1, day);
 
@@ -138,6 +140,29 @@ function Event({
     const formattedDate = date.toLocaleDateString("en-GB", options);
     return formattedDate.replace(/ (\d+)/, ", $1");
   }
+
+  const formatTimeRange = (time, period, duration) => {
+    let [hour, minute] = time.split(":").map(Number);
+
+    // Convert 12-hour format to 24-hour format
+    if (period === "PM" && hour !== 12) hour += 12;
+    if (period === "AM" && hour === 12) hour = 0;
+
+    let endHour = hour + duration;
+
+    // Convert back to 12-hour format
+    let startHour = hour % 12 || 12;
+    let startPeriod = period;
+
+    let endPeriod = endHour >= 12 ? "PM" : "AM";
+    let formattedEndHour = endHour % 12 || 12;
+
+    return `${startHour}:${minute
+      .toString()
+      .padStart(2, "0")} ${startPeriod} - ${formattedEndHour}:${minute
+      .toString()
+      .padStart(2, "0")} ${endPeriod}`;
+  };
 
   return (
     <div className={styles.eventContainer}>
@@ -208,10 +233,11 @@ function Event({
                 <div className={styles.eventdatesANdInfo}>
                   <div>{formatDate(event.date)}</div>
                   <span>
-                    {event.time} {event.period}
+                    {formatTimeRange(event.time, event.period, event.duration)}
                   </span>
                   <p>
-                    {event.duration} {event.duration > 1 ? "hours" : "hour"}
+                    {event.duration} {event.duration > 1 ? "hours" : "hour"},{" "}
+                    Group Meeting
                   </p>
                 </div>
 

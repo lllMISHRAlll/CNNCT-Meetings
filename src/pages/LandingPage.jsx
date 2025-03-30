@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "../stylesheets/landingPage.module.css";
 import TestimonialCards from "../components/TestimonialCards";
 import IntegrationCard from "../components/IntegrationCard";
@@ -7,6 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    token && localStorage.removeItem("token");
+  });
 
   return (
     <div className={style.main}>

@@ -25,6 +25,9 @@
   align-items: center;
   font-size: 1rem;
   font-weight: 600;
+  position: absolute;
+  bottom: 17%;
+  left: 2rem;
 }
 
 .logoutBtnent {
@@ -198,6 +201,7 @@
 
 .eventdatesANdInfo p {
   margin-top: 1rem;
+  margin-bottom: 1rem;
   color: #676767;
   font-size: 0.7rem;
 }
@@ -397,7 +401,6 @@
 .rejectBtnBg label {
   background-color: #616161;
   color: white;
-  height: 2rem;
   padding: 0.4rem 1rem;
   border-radius: 20px;
   border: 1px solid #676767;
@@ -472,7 +475,7 @@
 .logoutBtnWrapper {
   display: flex;
   flex-direction: column;
-  margin-top: 80%;
+  margin-top: 100%;
 }
 
 .mobileHead {
@@ -537,7 +540,7 @@
   }
 
   .content {
-    height: 92dvh;
+    height: 84dvh;
     overflow-y: auto;
   }
 
@@ -594,9 +597,18 @@
     font-size: 0.8rem;
   }
 
+  .meetingInner span {
+    font-size: 0.7rem;
+  }
+
   .participantsAndStatus {
     gap: 0.5rem;
     flex-direction: row-reverse;
+  }
+
+  .participantsAndStatus p {
+    display: flex;
+    font-size: 0.7rem;
   }
 
   .participantsAndStatus span {
@@ -664,6 +676,7 @@
     background-color: #f3f3f1;
     align-items: center;
     padding: 1rem 2rem;
+    position: sticky;
   }
 
   .logo {
@@ -681,5 +694,24 @@
   .logoutBtn {
     position: absolute;
     right: 4rem;
+  }
+
+  .rejectBtnBg {
+    gap: 0.5rem;
+  }
+
+  .rejectBtnBg label {
+    font-size: 0.6rem;
+    text-align: center;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .rejectBtnBg p {
+    display: flex;
+    font-size: 0.7rem;
+  }
+
+  .rejectBtnBg p span {
+    display: none;
   }
 }

@@ -7,6 +7,7 @@ import styles from "../stylesheets/dashboard.module.css";
 import UserProfile from "../components/UserProfile";
 import Availability from "../components/Availability";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   faLink,
   faCalendarDay,
@@ -27,6 +28,7 @@ function Dashboard({ host }) {
   const [activeTab, setActiveTab] = useState("");
   const [availability, setAvailability] = useState(null);
   const [logoutBtnPop, setLogoutBtnPop] = useState(false);
+  const navigate = useNavigate();
   const tabs = [
     { name: "Events", icon: faLink },
     { name: "Booking", icon: faCalendarDay },
@@ -163,7 +165,7 @@ function Dashboard({ host }) {
   return (
     <div className={styles.container}>
       <div className={styles.mobileHead}>
-        <div className={styles.logo} onClick={() => navigate("/")}>
+        <div className={styles.logo}>
           <img src="assets/logos/cbi_plug-eu.png" alt="Logo" />
           <p>CNNCT</p>
         </div>

@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../stylesheets/dashboard.module.css";
 import MeetingsOnBooking from "./MeetingsOnBooking";
 
-export default function Pending({ meetings, hostId }) {
+export default function Pending({ meetings, hostId, setMeetings }) {
   return (
     <div className={styles.bookingContent}>
       {meetings.length > 0 ? (
@@ -12,6 +12,7 @@ export default function Pending({ meetings, hostId }) {
             event={event}
             hostId={hostId}
             isPending={true}
+            setMeetings={setMeetings}
           />
         ))
       ) : (

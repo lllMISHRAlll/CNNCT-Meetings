@@ -12,10 +12,28 @@ export default function MeetingsOnBooking({
   hostId,
   handleStatusChange,
   canceled,
+  setMeetings,
 }) {
   const [toggleMembersModal, settoggleMembersModal] = useState(false);
   const currentStatus =
     event.participants.find((p) => p.userId === hostId)?.status || "pending";
+
+  const fetchEvents = async () => {
+    try {
+      const res = await axios.get(`${getBaseURI()}/api/event/getevents`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+
+      const { events } = res.data;
+
+      setMeetings(events);
+    } catch (error) {
+      console.error(
+        "Error fetching events:",
+        error.response?.data || error.message
+      );
+    }
+  };
 
   const updateStatus = async (newStatus) => {
     try {
@@ -30,6 +48,7 @@ export default function MeetingsOnBooking({
       );
 
       toast.info(`Meeting ${newStatus}`);
+      await fetchEvents();
       handleStatusChange?.(event._id, newStatus);
     } catch (error) {
       console.error("Error updating status:", error.response?.data || error);
