@@ -177,7 +177,7 @@ function Dashboard({ host }) {
               onClick={handleLogOut}
             >
               <FontAwesomeIcon icon={faArrowRightFromBracket} rotation={180} />
-              Sign Out
+              <span>Sign Out</span>
             </button>
           )}
 

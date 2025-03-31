@@ -11,25 +11,6 @@
   height: 100%;
 }
 
-.logoutBtn {
-  height: 2.5rem;
-  border: none;
-  box-shadow: 3px 6px 2px 2px rgba(0, 0, 0, 0.1);
-  transition: 0.2s;
-  padding: 0.2rem 1rem;
-  margin: 0rem auto;
-  border-radius: 20px;
-  background-color: transparent;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 600;
-  position: absolute;
-  bottom: 17%;
-  left: 2rem;
-}
-
 .logoutBtnent {
   height: 2.5rem;
   padding: 0.2rem 1rem;
@@ -474,8 +455,28 @@
 
 .logoutBtnWrapper {
   display: flex;
-  flex-direction: column;
-  margin-top: 100%;
+  justify-content: center;
+  margin-top: 80%;
+  position: relative;
+  padding-top: 3rem;
+}
+
+.logoutBtn {
+  height: 2.5rem;
+  border: none;
+  box-shadow: 3px 6px 2px 2px rgba(0, 0, 0, 0.1);
+  transition: 0.2s;
+  padding: 0.2rem 1rem;
+  border-radius: 20px;
+  background-color: transparent;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  position: absolute;
+  left: 25%;
+  top: 0;
 }
 
 .mobileHead {
@@ -684,7 +685,11 @@
   }
 
   .logoutBtnWrapper {
+    position: relative;
     margin: 0;
+    padding: 0;
+    width: 7rem;
+    display: flex;
   }
 
   .logoutBtnent {
@@ -692,8 +697,15 @@
   }
 
   .logoutBtn {
+    width: 4rem;
     position: absolute;
-    right: 4rem;
+    left: 70%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .logoutBtn span {
+    display: none;
   }
 
   .rejectBtnBg {

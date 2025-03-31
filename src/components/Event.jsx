@@ -142,28 +142,27 @@ function Event({
   }
 
   const formatTimeRange = (time, period, duration) => {
+    if (!time) return;
+
     let [hour, minute] = time.split(":").map(Number);
 
-    // Convert 12-hour format to 24-hour format
     if (period === "PM" && hour !== 12) hour += 12;
     if (period === "AM" && hour === 12) hour = 0;
 
     let endHour = hour + duration;
 
-    // Convert back to 12-hour format
-    let startHour = hour % 12 || 12;
-    let startPeriod = period;
+    let endPeriod = endHour >= 24 ? "AM" : endHour >= 12 ? "PM" : "AM";
+    endHour = endHour % 24; // Ensure hour doesn't exceed 24
 
-    let endPeriod = endHour >= 12 ? "PM" : "AM";
+    let startHour = hour % 12 || 12;
     let formattedEndHour = endHour % 12 || 12;
 
     return `${startHour}:${minute
       .toString()
-      .padStart(2, "0")} ${startPeriod} - ${formattedEndHour}:${minute
+      .padStart(2, "0")} ${period} - ${formattedEndHour}:${minute
       .toString()
       .padStart(2, "0")} ${endPeriod}`;
   };
-
   return (
     <div className={styles.eventContainer}>
       <div className={styles.upperContent}>
@@ -189,9 +188,13 @@ function Event({
             const hasConflict = conflict?.eventConflict.some(
               ({ e1 }) => e1 === event._id
             );
-            const isAvailable = conflict?.availableForThisMeeting.some(
+            const availabilityObj = conflict?.availableForThisMeeting.find(
               (availability) => Object.keys(availability)[0] === event._id
             );
+
+            const isAvailable = availabilityObj
+              ? availabilityObj[event._id]
+              : undefined;
 
             const canEdit = dcToken.userId === event.createdBy;
 

@@ -37,11 +37,6 @@ function Booking({ meetings: initialMeetings, hostId, setMeetings }) {
           eventDateTime.setHours(eventDateTime.getHours() + 12);
         }
 
-        console.log("Event:", event.topic);
-        console.log("Event DateTime:", eventDateTime);
-        console.log("Current Time:", currentTime);
-        console.log("Is Expired?", eventDateTime <= currentTime);
-
         const participant = event.participants.find((p) => p.userId === hostId);
         const isHost = event.createdBy === hostId;
         const isExpired = eventDateTime <= currentTime;

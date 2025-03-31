@@ -73,7 +73,7 @@ function CreateMeeting({
 
       let res;
       if (editable && formData._id) {
-        res = await axios.put(
+        res = await axios.patch(
           `${getBaseURI()}/api/event/updateevent/${formData._id}`,
           payload,
           {
