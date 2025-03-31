@@ -24,7 +24,7 @@ function Event({
     const newStatus = !currentStatus;
     try {
       const token = localStorage.getItem("token");
-      await axios.put(
+      await axios.patch(
         `${getBaseURI()}/api/event/updateevent/${eventId}`,
         { isActive: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -152,7 +152,7 @@ function Event({
     let endHour = hour + duration;
 
     let endPeriod = endHour >= 24 ? "AM" : endHour >= 12 ? "PM" : "AM";
-    endHour = endHour % 24; // Ensure hour doesn't exceed 24
+    endHour = endHour % 24;
 
     let startHour = hour % 12 || 12;
     let formattedEndHour = endHour % 12 || 12;
